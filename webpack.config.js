@@ -1,6 +1,6 @@
 module.exports = [
   {
-    entry: './app.scss',
+    entry: './css/app.scss',
     output: {
       // This is necessary for webpack to compile
       // But we never use style-bundle.js
@@ -29,7 +29,7 @@ module.exports = [
     },
   },
   {
-    entry: "./app.js",
+    entry: "./js/app.js",
     output: {
       filename: "bundle.js"
     },
@@ -42,5 +42,10 @@ module.exports = [
         }
       }]
     },
+    resolve: {
+      alias: {
+        vue: 'vue/dist/vue.js'
+      }
+    }
   }
 ];
