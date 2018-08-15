@@ -1,4 +1,8 @@
 @import "@material/top-app-bar/mdc-top-app-bar";
+@import "@material/textfield/mdc-text-field";
+@import "@material/button/mdc-button";
+@import "@material/dialog/mdc-dialog";
+@import "@material/card/mdc-card";
 
 html, body {
   height: 100%;
@@ -10,6 +14,45 @@ body {
   padding-top: 0.1px; // Prevent header h1 margin from pushing body down
 }
 
-.feed-app {
-	margin-top: 64px;
+ul, li {
+	padding: 0;
+}
+
+li {
+	list-style-type: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+main {
+	margin: 96px 80px;
+}
+
+/* vue animations */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+// util
+
+.mr-top {
+	margin-top: 16px;
+}
+.mr-bottom {
+	margin-bottom: 16px;
+}
+.mr-left {
+	margin-left: 16px;
+}
+.mr-right {
+	margin-right: 16px;
+}
+
+.padding {
+	padding: 16px;
 }

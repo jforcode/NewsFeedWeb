@@ -13,11 +13,14 @@
     "css-loader": "^0.28.0",
     "extract-loader": "^1.0.2",
     "file-loader": "^1.1.11",
-    "material-components-web": "^0.38.1",
     "node-sass": "^4.9.3",
     "sass-loader": "^6.0.4",
-    "vue": "^2.5.17",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.3"
+  },
+  "dependencies": {
+    "material-components-web": "^0.38.1",
+    "vue": "^2.5.17",
+    "axios": "^0.18.0"
   }
 }
