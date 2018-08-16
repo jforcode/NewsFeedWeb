@@ -1,3 +1,7 @@
+body {
+	background: #FAFAFA;
+}
+
 #srchBox::placeholder {
 	color: #CFD8DC;
 }
@@ -13,20 +17,27 @@
 }
 
 .filters {
-	margin: 0 !important;
 	padding-left: 80px;
-	background-color: #EEEEEE;
+	margin: 0 !important;
 }
 
 .feeds {
-	background: #ff9800;
-	margin: 0 !important;
-	width: calc(75% + 16px);
 }
 
 .applied-filters {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.all-pubs-dialog {
+	width: 70%;
+	height: 320px;
+}
+.all-pubs {
+	display: flex;
+	flex-wrap: wrap;
+	height: 50%;
+	overflow: scroll;
 }
 
 
