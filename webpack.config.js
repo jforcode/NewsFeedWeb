@@ -1,6 +1,6 @@
 module.exports = [
   {
-    entry: './css/app.scss',
+    entry: './css/app.css',
     output: {
       // This is necessary for webpack to compile
       // But we never use style-bundle.js
@@ -8,7 +8,7 @@ module.exports = [
     },
     module: {
       rules: [{
-        test: /\.scss$/,
+        test: /\.css$/,
         use: [
           {
             loader: 'file-loader',

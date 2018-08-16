@@ -5,89 +5,15 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Shrine (MDC Web Example App)</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="bundle.css">
 </head>
 
 <body>
-<div id="feedApp">
-	
-	<transition name="fade">
-		<header class="mdc-top-app-bar" v-if="!searchBarVisible">
-			<div class="mdc-top-app-bar__row">
-				<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-					<a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-					<span class="mdc-top-app-bar__title">Title</span>
-				</section>
-				<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-					<a class="material-icons mdc-top-app-bar__action-item" alt="Search" @click="searchBarVisible = true">search</a>
-					<a class="material-icons mdc-top-app-bar__action-item" alt="Sort" @click="showSortDialog">sort_by_alpha</a>
-					<a class="material-icons mdc-top-app-bar__action-item" alt="Filter" @click="showFilterDialog">filter_list</a>
-				</section>
-			</div>
-		</header>
-	</transition>
-
-	<transition name="fade">
-		<form v-on:submit.prevent="search">
-
-			<header class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-trailing-icon" v-if="searchBarVisible">
-				<input type="text" v-model="searchTerm" id="my-input" class="mdc-text-field__input" placeholder="Search for something" style="padding-left: 16px;">
-				<i class="material-icons mdc-text-field__icon" tabindex="0" role="button" @click="search" style="position: absolute; right: 56px;">search</i>
-				<i class="material-icons mdc-text-field__icon" tabindex="1" role="button" @click="searchBarVisible = false">close</i>
-				<div class="mdc-line-ripple"></div>
-			</header>
-
-		</form>
-	</transition>
-
-	<div class="feed-app">
-		<button v-on:click="showSortDialog" style="margin: 120px;">DO SOMETHING</button>
-		<ul class="mdc-list">
-			<li v-for="feed in feeds">
-				<a :href="feed.url">
-					<div class="mdc-card padding mr-tp">
-						<p>{{ feed.title }}</p>
-						<p>{{ feed.publisher }}</p>
-					</div>
-				</a>
-			</li>
-		</ul>
+	<div id="feedApp">
+		<div class="test">
+			<p>{{ message }}</p>
+		</div>
 	</div>
-
-	<aside id="sortDialog" class="mdc-dialog" role="sortDialog">
-		<div class="mdc-dialog__surface">
-			<header class="mdc-dialog__header">
-				<h2 class="mdc-dialog__header__title">Sort Feed</h2>
-			</header>
-			<section class="mdc-dialog__body">
-				TODO: sort by publisher or date
-			</section>
-			<footer class="mdc-dialog__footer">
-				<button class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Cancel</button>
-				<button class="mdc-button mdc-button--raised mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>       
-			</footer>
-		</div>
-	</aside>
-
-	<aside id="filterDialog" class="mdc-dialog" role="filterDialog">
-		<div class="mdc-dialog__surface">
-			<header class="mdc-dialog__header">
-				<h2 class="mdc-dialog__header__title">Select Filters</h2>
-			</header>
-			<section class="mdc-dialog__body">
-				TODO: Filters for publisher, category and date
-			</section>
-			<footer class="mdc-dialog__footer">
-				<button class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Cancel</button>
-				<button class="mdc-button mdc-button--raised mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
-			</footer>
-		</div>
-	</aside>
-
-</div>
 <script src="bundle.js"></script>
 </body>
 
