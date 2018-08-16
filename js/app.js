@@ -4,8 +4,11 @@ import axios from 'axios';
 const app = new Vue({
 	el: '#feedApp',
 	data: {
-		message: "Hello Vue"
+		searchTerm: ""
 	},
 	methods: {
+		search: function () {
+			alert(this.searchTerm);
+		}
 	}
 });

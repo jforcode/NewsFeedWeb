@@ -1,3 +1,56 @@
-.test {
-	background-color: #ff9800;
+#srchBox::placeholder {
+	color: #CFD8DC;
+}
+
+.page-content {
+	margin-left: 80px;
+}
+
+.filters {
+	
+}
+
+.feeds {
+
+}
+
+
+.mr {
+	margin: 16px;
+}
+
+.mr-tp {
+	margin-top: 16px;
+}
+
+.mr-bm {
+	margin-bottom: 16px;
+}
+
+.mr-lt {
+	margin-left: 16px;
+}
+
+.mr-rt {
+	margin-right: 16px;
+}
+
+.pd {
+	padding: 16px;
+}
+
+.pd-tp {
+	padding-left: 16px;
+}
+
+.pd-bm {
+	padding-bottom: 16px;
+}
+
+.pd-lt {
+	padding-left: 16px;
+}
+
+.pd-rt {
+	padding-right: 16px;
 }
