@@ -2,16 +2,31 @@
 	color: #CFD8DC;
 }
 
+.page-content-holder {
+	position: relative;
+}
 .page-content {
-	margin-left: 80px;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	padding: 0 !important;
 }
 
 .filters {
-	
+	margin: 0 !important;
+	padding-left: 80px;
+	background-color: #EEEEEE;
 }
 
 .feeds {
+	background: #ff9800;
+	margin: 0 !important;
+	width: calc(75% + 16px);
+}
 
+.applied-filters {
+	display: flex;
+	flex-wrap: wrap;
 }
 
 

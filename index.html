@@ -25,7 +25,7 @@
 						<form @submit.prevent.default="search">
 							<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mr-lt mr-rt">
 								<div class="mdl-textfield__expandable-holder">
-									<input class="mdl-textfield__input" type="text" id="srchBox" placeholder="Title or Publisher">
+									<input class="mdl-textfield__input" type="text" v-model="searchTerm" id="srchBox" placeholder="Title or Publisher">
 									<label class="mdl-textfield__label" for="sample-expandable">Search</label>
 								</div>
 								<label class="mdl-button mdl-js-button mdl-button--icon" for="srchBox">
@@ -37,10 +37,10 @@
 							<i class="material-icons">sort_by_alpha</i>
 						</button>
 						<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-right">
-							<li class="mdl-menu__item">Publisher (A - Z)</li>
-							<li class="mdl-menu__item mdl-menu__item--full-bleed-divider">Publisher (Z - A)</li>
-							<li class="mdl-menu__item">Newest Posts First</li>
-							<li class="mdl-menu__item">Oldest Posts First</li>
+							<li class="mdl-menu__item" @click="sort(consts.publisher, false)">Publisher (A - Z)</li>
+							<li class="mdl-menu__item mdl-menu__item--full-bleed-divider" @click="sort(consts.publisher, true)">Publisher (Z - A)</li>
+							<li class="mdl-menu__item" @click="sort(consts.publishedOn, true)">Newest Posts First</li>
+							<li class="mdl-menu__item" @click="sort(consts.publishedOn, false)">Oldest Posts First</li>
 						</ul>
 						<div class="mdl-button mdl-js-button mdl-button--icon mr-lt mr-rt">
 							<i class="material-icons">filter_list</i>
@@ -48,11 +48,27 @@
 					</nav>
 				</div>
 			</header>
-			<main class="mdl-layout__content">
+			<main class="mdl-layout__content page-content-holder">
 				<div class="mdl-grid page-content">
-					<div class="filters mdl-cell mdl-cell--4-col">
+					<div class="filters mdl-cell mdl-cell--3-col">
+						<h6>Select Category</h6>
+						<div v-for="category in categories">
+							<input type="checkbox" :id="'cat_'+category.id" v-model="category.selected" @change="onCategorySelected(category)">
+							<label :for="'cat_'+category.id">{{ category.value }}</label>
+						</div>
+						<h6>Select Publisher</h6>
+						<div v-for="publisher in publishers">
+							<input type="checkbox" :id="'pub_'+publisher.id" v-model="publisher.selected" @change="onPublisherSelected(publisher)">
+							<label :for="'pub_'+publisher.id">{{ publisher.value }}</label>
+						</div>
 					</div>
-					<div class="feeds mdl-cell mdl-cell--8-col">
+					<div class="feeds mdl-cell mdl-cell--9-col">
+						<div class="applied-filters">
+							<span class="mdl-chip mdl-chip--deletable mr-lt" v-for="filter in appliedFilters">
+    						<span class="mdl-chip__text">{{ filter.value }}</span>
+								<button type="button" class="mdl-chip__action"><i class="material-icons">cancel</i></button>
+							</span>
+						</div>
 					</div>
 				</div>
 			</main>
