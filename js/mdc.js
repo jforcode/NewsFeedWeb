@@ -9,15 +9,22 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 const sortDialog = new MDCDialog(document.querySelector('#sortDialog'));
 const filterDialog = new MDCDialog(document.querySelector('#filterDialog'));
 
-[filterDialog, sortDialog].forEach(dialog => {
-	dialog.listen('MDCDialog:accept', () => {
+	sortDialog.listen('MDCDialog:accept', () => {
 		console.log('accepted');
 	})
 
-	dialog.listen('MDCDialog:cancel', () => {
+	sortDialog.listen('MDCDialog:cancel', () => {
 		console.log('cancelled');
 	})
-});
+
+
+	filterDialog.listen('MDCDialog:accept', () => {
+		console.log('accepted');
+	})
+
+	filterDialog.listen('MDCDialog:cancel', () => {
+		console.log('cancelled');
+	})
 
 module.exports = {
 	sortDialog,

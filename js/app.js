@@ -23,13 +23,6 @@ const app = new Vue({
 		}
 	},
 	created: function () {
-		axios
-			.get('http://127.0.0.1:8080/feed')
-			.then(response => {
-				this.feeds = response.data;
-			})
-			.catch(error => {
-				console.log(error);
-			});
+		
 	}
 });

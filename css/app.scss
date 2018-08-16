@@ -40,19 +40,31 @@ main {
 
 // util
 
-.mr-top {
+.mr-tp {
 	margin-top: 16px;
 }
-.mr-bottom {
+.mr-bm {
 	margin-bottom: 16px;
 }
-.mr-left {
+.mr-lt {
 	margin-left: 16px;
 }
-.mr-right {
+.mr-rt {
 	margin-right: 16px;
 }
 
-.padding {
+.pd {
 	padding: 16px;
+}
+.pd-tp {
+	padding-left: 16px;
+}
+.pd-bm {
+	padding-bottom: 16px;
+}
+.pd-lt {
+	padding-left: 16px;
+}
+.pd-rt {
+	padding-right: 16px;
 }

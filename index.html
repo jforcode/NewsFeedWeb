@@ -22,44 +22,39 @@
 					<span class="mdc-top-app-bar__title">Title</span>
 				</section>
 				<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-					<div class="mdc-text-field">
-						<input type="text" id="my-input" class="mdc-text-field__input">
-						<label for="my-input" class="mdc-floating-label">Search Term</label>
-						<div class="mdc-line-ripple"></div>
-					</div>
-					<a href="#" class="material-icons mdc-top-app-bar__action-item" alt="Search">search</a>
-					<a href="#" class="material-icons mdc-top-app-bar__action-item" alt="Sort" @click="showSortDialog">sort_by_alpha</a>
-					<a href="#" class="material-icons mdc-top-app-bar__action-item" alt="Filter" @click="showFilterDialog">filter_list</a>
+					<a class="material-icons mdc-top-app-bar__action-item" alt="Search" @click="searchBarVisible = true">search</a>
+					<a class="material-icons mdc-top-app-bar__action-item" alt="Sort" @click="showSortDialog">sort_by_alpha</a>
+					<a class="material-icons mdc-top-app-bar__action-item" alt="Filter" @click="showFilterDialog">filter_list</a>
 				</section>
 			</div>
 		</header>
 	</transition>
 
 	<transition name="fade">
-    <form v-on:submit.prevent="search">
+		<form v-on:submit.prevent="search">
 
-      <header class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-trailing-icon" v-if="searchBarVisible">
-        <input type="text" v-model="searchTerm" id="my-input" class="mdc-text-field__input" placeholder="Search for something" style="padding-left: 16px;">
-        <i class="material-icons mdc-text-field__icon" tabindex="0" role="button" @click="search" style="position: absolute; right: 56px;">search</i>
-        <i class="material-icons mdc-text-field__icon" tabindex="1" role="button" @click="searchBarVisible = false">close</i>
-        <div class="mdc-line-ripple"></div>
-      </header>
+			<header class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-trailing-icon" v-if="searchBarVisible">
+				<input type="text" v-model="searchTerm" id="my-input" class="mdc-text-field__input" placeholder="Search for something" style="padding-left: 16px;">
+				<i class="material-icons mdc-text-field__icon" tabindex="0" role="button" @click="search" style="position: absolute; right: 56px;">search</i>
+				<i class="material-icons mdc-text-field__icon" tabindex="1" role="button" @click="searchBarVisible = false">close</i>
+				<div class="mdc-line-ripple"></div>
+			</header>
 
-    </form>
-  </transition>
+		</form>
+	</transition>
 
 	<div class="feed-app">
+		<button v-on:click="showSortDialog" style="margin: 120px;">DO SOMETHING</button>
 		<ul class="mdc-list">
 			<li v-for="feed in feeds">
 				<a :href="feed.url">
-					<div class="mdc-card padding mr-top">
+					<div class="mdc-card padding mr-tp">
 						<p>{{ feed.title }}</p>
 						<p>{{ feed.publisher }}</p>
 					</div>
 				</a>
 			</li>
 		</ul>
-
 	</div>
 
 	<aside id="sortDialog" class="mdc-dialog" role="sortDialog">
@@ -72,7 +67,7 @@
 			</section>
 			<footer class="mdc-dialog__footer">
 				<button class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Cancel</button>
-				<button class="mdc-button mdc-button--raised mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>				
+				<button class="mdc-button mdc-button--raised mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>       
 			</footer>
 		</div>
 	</aside>
