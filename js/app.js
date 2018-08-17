@@ -2,7 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 
 const apiUrl = 'http://localhost:8080';
-axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
+const filterLimit = 5;
 
 const app = new Vue({
 	el: '#feedApp',
@@ -36,71 +36,57 @@ const app = new Vue({
 		feeds: []
 	},
 
+	// TODO: loading of feeds should be throttled
 	methods: {
 		search: function() {
-			this.fetchFeed();
+			this.loadFeeds();
 		},
 
 		sort: function(sortBy, descOrder) {
 			this.sortBy = sortBy;
 			this.descOrder = descOrder;
 
-			this.fetchFeed();
+			this.loadFeeds();
 		},
 
 		onCategorySelected: function(category) {
 			category.selected ?
-				this.addAppliedFilter(this.consts.category, category.value) :
-				this.removeAppliedFilter(this.consts.category, category.value);
+				this.addCategoryFilter(category.value) :
+				this.removeCategoryFilter(category.value);
+
+			this.loadFeeds();
 		},
 
 		onPublisherSelected: function(publisher) {
 			publisher.selected ?
-				this.addAppliedFilter(this.consts.publisher, publisher.displayStr) :
-				this.removeAppliedFilter(this.consts.publisher, publisher.displayStr);
+				this.addPublisherFilter(publisher.displayStr) :
+				this.removePublisherFilter(publisher.displayStr);
+
+			this.loadFeeds();
 		},
 
-		addAppliedFilter: function(type, value) {
-			if (type === this.consts.publisher) {
-				this.appliedFilters.publishers.push(value);
-				this.mapSelectedPubs[value] = true;
+		addCategoryFilter: function (value) {
+			this.appliedFilters.categories.push(value);			
+		},
 
-			} else if (type === this.consts.category) {
-				this.appliedFilters.categories.push(value);
+		addPublisherFilter: function (value) {
+			this.appliedFilters.publishers.push(value);
+			this.mapSelectedPubs[value] = true;
+		},
+
+		removeCategoryFilter: function (value) {
+			var ind = this.appliedFilters.categories.findIndex(category => category === value);
+			if (ind !== -1) {
+				this.appliedFilters.categories.splice(ind, 1);
 			}
 		},
 
-		removeAppliedFilter: function(type, value) {
-			if (type === this.consts.publisher) {
-				var ind = this.appliedFilters.publishers.findIndex(publisher => publisher === value);
-				if (ind !== -1) {
-					this.appliedFilters.publishers.splice(ind, 1);
-					delete this.mapSelectedPubs[value];
-				}
-
-			} else if (type === this.consts.category) {
-				var ind = this.appliedFilters.categories.findIndex(category => category === value);
-				if (ind !== -1) {
-					this.appliedFilters.categories.splice(ind, 1);
-				}
+		removePublisherFilter: function (value) {
+			var ind = this.appliedFilters.publishers.findIndex(publisher => publisher === value);
+			if (ind !== -1) {
+				this.appliedFilters.publishers.splice(ind, 1);
+				delete this.mapSelectedPubs[value];
 			}
-		},
-
-		loadAllPublishers: function() {
-			this.fetchPublishers()
-				.then(result => {
-					var i = 1;
-					this.countPublishers = result.data.countAllPublishers;
-					this.allPublishers = result.data.publishers.map(apiPublisher => {
-						var uiPublisher = getUiPublisher(apiPublisher, i++);
-						uiPublisher.selected = this.mapSelectedPubs[uiPublisher.displayStr];
-						return uiPublisher;
-					});
-
-					allPubsDialog.showModal();
-
-				})
-				.catch(err => console.log(err));
 		},
 
 		selectPublishersFromDialog: function() {
@@ -108,7 +94,7 @@ const app = new Vue({
 				var uiPubDisplayStr = publisher.displayStr;
 				if (publisher.selected) {
 					if (!this.mapSelectedPubs[uiPubDisplayStr]) {
-						this.addAppliedFilter(this.consts.publisher, uiPubDisplayStr);
+						this.addPublisherFilter(uiPubDisplayStr);
 					}
 					var mainUiPub = this.publishers.find(uiPublisher => uiPublisher.displayStr === uiPubDisplayStr);
 					if (mainUiPub) {
@@ -117,11 +103,47 @@ const app = new Vue({
 				}
 			});
 
+			this.loadFeeds();
 			allPubsDialog.close();
 		},
 
 		closeAllPubsDialog: function() {
 			allPubsDialog.close();
+		},
+
+		loadAllPublishers: async function() {
+			var result = await this.fetchPublishers();
+
+			var i = 1;
+			this.countPublishers = result.data.countAllPublishers;
+			this.allPublishers = result.data.publishers.map(apiPublisher => {
+				var uiPublisher = getUiPublisher(apiPublisher, i++);
+				uiPublisher.selected = this.mapSelectedPubs[uiPublisher.displayStr];
+				return uiPublisher;
+			});
+
+			allPubsDialog.showModal();
+		},
+
+		loadCategories: async function () {
+			var result = await this.fetchCategories();
+
+			this.categories = result.data.map(getUiCategory);	
+		},
+
+		loadPublishers: async function () {
+			var result = await this.fetchPublishers(filterLimit);
+
+			var i = 1;
+			this.countPublishers = result.data.countAllPublishers;
+			this.publishers = result.data.publishers.map(apiPublisher => getUiPublisher(apiPublisher, i++));
+		},
+
+		loadFeeds: async function () {
+			var result = await this.fetchFeeds()
+
+			this.countAllFeeds = result.data.countAllFeeds;
+			this.feeds = result.data.feeds.map(getUiFeed);			
 		},
 
 		fetchCategories: function() {
@@ -134,7 +156,7 @@ const app = new Vue({
 				: axios.get(apiUrl + '/publishers');
 		},
 
-		fetchFeed: function() {
+		fetchFeeds: function() {
 			var params = {
 				sort: {
 					sortBy: this.sortBy,
@@ -147,7 +169,7 @@ const app = new Vue({
 				page: this.currPageNum,
 				srch: this.searchTerm
 			};
-			console.log(params);
+
 			return axios.post(apiUrl + '/feed', params);
 		}
 	},
@@ -162,23 +184,9 @@ const app = new Vue({
 	created: function() {
 		this.allPubsDialog = document.querySelector('#allPubsDialog');
 
-		this.fetchCategories()
-			.then(result => {
-				this.categories = result.data.map(getUiCategory);
-			});
-
-		this.fetchPublishers(5)
-			.then(result => {
-				var i = 1;
-				this.countPublishers = result.data.countAllPublishers;
-				this.publishers = result.data.publishers.map(apiPublisher => getUiPublisher(apiPublisher, i++));
-			});
-
-		this.fetchFeed()
-			.then(result => {
-				this.countAllFeeds = result.data.countAllFeeds;
-				this.feeds = result.data.feeds.map(getUiFeed);
-			});
+		this.loadCategories();
+		this.loadPublishers();
+		this.loadFeeds();
 	}
 });
 

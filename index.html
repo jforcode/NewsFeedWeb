@@ -58,7 +58,7 @@
 						<h6>Select Publisher</h6>
 						<div v-for="publisher in publishers">
 							<input type="checkbox" :id="'pub_'+publisher.id" v-model="publisher.selected" @change="onPublisherSelected(publisher)">
-							<label :for="'pub_'+publisher.id">{{ publisher.displayStr }}</label>
+							<label :for="'pub_'+publisher.id">{{ publisher.publisher }}</label>
 						</div>
 						<p v-if="countPublishers > publishers.length" @click="loadAllPublishers">SHOW ALL</p>
 
@@ -67,16 +67,16 @@
 						<h6 v-if="!isAnyFilterApplied" class="no-filters-label">
 							No Filters Applied
 						</h6>
-						<div class="applied-filters" v-else>
+						<div v-else class="applied-filters">
 							<span class="applied-filter mdl-chip mdl-chip--deletable" v-for="category in appliedFilters.categories">
     						<span class="mdl-chip__text">{{ category }}</span>
-								<button type="button" class="mdl-chip__action">
+								<button type="button" class="mdl-chip__action" @click="removeCategoryFilter(category)">
 									<i class="material-icons">cancel</i>
 								</button>
 							</span>
 							<span class="applied-filter mdl-chip mdl-chip--deletable" v-for="publisher in appliedFilters.publishers">
     						<span class="mdl-chip__text">{{ publisher }}</span>
-								<button type="button" class="mdl-chip__action">
+								<button type="button" class="mdl-chip__action" @click="removePublisherFilter(publisher)">
 									<i class="material-icons">cancel</i>
 								</button>
 							</span>
