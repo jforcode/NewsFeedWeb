@@ -17,17 +17,40 @@ body {
 }
 
 .filters {
+	background-color: #FFFFFF;
 	padding-left: 80px;
 	margin: 0 !important;
 }
 
-.feeds {
+.content {
+}
+
+.no-filters-label {
+	margin: 16px 16px 12px 16px;
 }
 
 .applied-filters {
 	display: flex;
 	flex-wrap: wrap;
+	margin-top: 16px;
+	margin-left: 16px;
 }
+
+.applied-filter {
+	margin-left: 8px;
+}
+.applied-filter:first-child {
+	margin-left: 0;
+}
+
+.feeds-holder {
+}
+
+.feed-item {
+	background-color: #FFFFFF;
+	padding: 16px;
+}
+
 
 .all-pubs-dialog {
 	width: 70%;
@@ -59,6 +82,26 @@ body {
 
 .mr-rt {
 	margin-right: 16px;
+}
+
+.mr--sm {
+	margin: 8px;
+}
+
+.mr-tp--sm {
+	margin-top: 8px;
+}
+
+.mr-bm--sm {
+	margin-bottom: 8px;
+}
+
+.mr-lt--sm {
+	margin-left: 8px;
+}
+
+.mr-rt--sm {
+	margin-right: 8px;
 }
 
 .pd {

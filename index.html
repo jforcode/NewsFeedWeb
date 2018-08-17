@@ -58,32 +58,51 @@
 						<h6>Select Publisher</h6>
 						<div v-for="publisher in publishers">
 							<input type="checkbox" :id="'pub_'+publisher.id" v-model="publisher.selected" @change="onPublisherSelected(publisher)">
-							<label :for="'pub_'+publisher.id">{{ getPublisherUiStr(publisher) }}</label>
+							<label :for="'pub_'+publisher.id">{{ publisher.displayStr }}</label>
 						</div>
 						<p v-if="countPublishers > publishers.length" @click="loadAllPublishers">SHOW ALL</p>
 
 					</div>
-					<div class="feeds mdl-cell mdl-cell--8-col">
-						<div class="applied-filters">
-							<span class="mdl-chip mdl-chip--deletable mr-lt" v-for="filter in appliedFilters">
-    						<span class="mdl-chip__text">{{ filter.value }}</span>
-							<button type="button" class="mdl-chip__action"><i class="material-icons">cancel</i></button>
+					<div class="content mdl-cell mdl-cell--8-col">
+						<h6 v-if="!isAnyFilterApplied" class="no-filters-label">
+							No Filters Applied
+						</h6>
+						<div class="applied-filters" v-else>
+							<span class="applied-filter mdl-chip mdl-chip--deletable" v-for="category in appliedFilters.categories">
+    						<span class="mdl-chip__text">{{ category }}</span>
+								<button type="button" class="mdl-chip__action">
+									<i class="material-icons">cancel</i>
+								</button>
 							</span>
+							<span class="applied-filter mdl-chip mdl-chip--deletable" v-for="publisher in appliedFilters.publishers">
+    						<span class="mdl-chip__text">{{ publisher }}</span>
+								<button type="button" class="mdl-chip__action">
+									<i class="material-icons">cancel</i>
+								</button>
+							</span>
+						</div>
+						<div class="feeds-holder mdl-grid">
+							<div class="feed-item mdl-cell mdl-cell--6-col mdl-shadow--2dp" v-for="item in feeds">
+								<p class="feed-item__title">{{ item.title }}</p>
+								<p class="feed-item__publisher" :href="item.publisherUrl">{{ item.publisher }}</p>
+								<p class="feed-item__category">{{ item.category }}</p>
+								<p class="feed-item__published-on">{{ item.publishedOnStr }}</p>
+							</div>
 						</div>
 					</div>
 				</div>
 			</main>
 			
 			<dialog class="mdl-dialog all-pubs-dialog" id="allPubsDialog">
-				<h4 class="mdl-dialog__title">All Publishers</h4>
+				<p class="mdl-dialog__title">All Publishers</p>
 				<div class="mdl-dialog__content all-pubs">
 					<div v-for="publisher in allPublishers">
 						<input type="checkbox" :id="'allPub_'+publisher.id" v-model="publisher.selected">
-						<label :for="'allPub_'+publisher.id">{{ getPublisherUiStr(publisher) }}</label>
+						<label :for="'allPub_'+publisher.id">{{ publisher.displayStr }}</label>
 					</div>
 				</div>
 				<div class="mdl-dialog__actions">
-					<button type="button" class="mdl-button" @click="selectPublishersFromDialog">Apply Filters</button>
+					<button type="button" class="mdl-button mdl-color--primary mdl-color-text--white" @click="selectPublishersFromDialog">Apply Filters</button>
 					<button type="button" class="mdl-button" @click="closeAllPubsDialog">Cancel</button>
 				</div>
 			</dialog>
