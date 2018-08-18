@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import fltr from './filters.js';
+import util from './util.js';
 
 const apiUrl = 'http://localhost:8080';
 const filterLimit = 5;
@@ -34,7 +35,6 @@ const app = new Vue({
 		appliedFilters: new fltr.FiltersHolder()
 	},
 
-	// TODO: loading of feeds should be debounced
 	methods: {
 		search: function() {
 			this.loadFeeds();
@@ -125,12 +125,12 @@ const app = new Vue({
 			this.publishers = result.data.publishers.map(apiPublisher => getUiPublisher(apiPublisher, i++));
 		},
 
-		loadFeeds: async function () {
+		loadFeeds: util.debounce(async function () {
 			var result = await this.fetchFeeds()
 
 			this.countAllFeeds = result.data.countAllFeeds;
 			this.feeds = result.data.feeds.map(getUiFeed);			
-		},
+		}, 500),
 
 		fetchCategories: function() {
 			return axios.get(apiUrl + '/categories');

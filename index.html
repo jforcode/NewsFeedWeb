@@ -39,15 +39,12 @@
 							<li class="mdl-menu__item" @click="sort('publishedOn', true)">Newest Posts First</li>
 							<li class="mdl-menu__item" @click="sort('publishedOn', false)">Oldest Posts First</li>
 						</ul>
-						<div class="mdl-button mdl-js-button mdl-button--icon mr-lt mr-rt">
-							<i class="material-icons">filter_list</i>
-						</div>
 					</nav>
 				</div>
 			</header>
 			<main class="mdl-layout__content page-content-holder">
 				<div class="mdl-grid page-content">
-					<div class="filters mdl-cell mdl-cell--4-col mdl-shadow--2dp">
+					<div class="filters mdl-cell mdl-cell--3-col mdl-shadow--2dp">
 
 						<h6>Select Category</h6>
 						<div v-for="category in categories">
@@ -56,14 +53,14 @@
 						</div>
 
 						<h6>Select Publisher</h6>
-						<div v-for="publisher in publishers">
-							<input type="checkbox" :id="'pub_'+publisher.id" v-model="publisher.selected" @change="onPublisherSelected(publisher)">
-							<label :for="'pub_'+publisher.id">{{ publisher.publisher }}</label>
+						<div v-for="publ in publishers">
+							<input type="checkbox" :id="'pub_'+publ.id" v-model="publ.selected" @change="onPublisherSelected(publ)">
+							<label :for="'pub_'+publ.id">{{ publ.publisher }}</label>
 						</div>
 						<p v-if="countPublishers > publishers.length" @click="loadAllPublishers">SHOW ALL</p>
 
 					</div>
-					<div class="content mdl-cell mdl-cell--8-col">
+					<div class="content mdl-cell mdl-cell--9-col">
 						<h6 v-if="!isAnyFilterApplied" class="no-filters-label">
 							No Filters Applied
 						</h6>
