@@ -21,7 +21,7 @@ const app = new Vue({
 			category: 'Category'
 		},
 		sorters: [
-			new Sorter('publishedOn', true, 'Newest Posts'),
+			new Sorter('publishedOn', true, 'Latest Posts'),
 			new Sorter('publishedOn', false, 'Oldest Posts'),
 			new Sorter('publisher', false, 'Publisher (A - Z)'),
 			new Sorter('publisher', false, 'Publisher (Z - A)')
