@@ -16,44 +16,44 @@
 		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 			<header class="mdl-layout__header">
 				<div class="mdl-layout__header-row">
-					<span class="mdl-layout-title">News Feed - AE</span>
+					<span class="mdl-layout-title">News Feed - American Express </span>
 					<div class="mdl-layout-spacer"></div>
-					<nav class="mdl-navigation">
-						<form @submit.prevent.default="search">
-							<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mr-lt mr-rt">
-								<div class="mdl-textfield__expandable-holder">
-									<input class="mdl-textfield__input" type="text" v-model="searchTerm" id="srchBox" placeholder="Title or Publisher">
-									<label class="mdl-textfield__label" for="sample-expandable">Search</label>
-								</div>
-								<label class="mdl-button mdl-js-button mdl-button--icon" for="srchBox">
-									<i class="material-icons">search</i>
-								</label>
-							</div>
-						</form>
-						<button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon mr-lt mr-rt">
-							<i class="material-icons">sort_by_alpha</i>
-						</button>
-						<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-right">
-							<li class="mdl-menu__item" @click="sort('publisher', false)">Publisher (A - Z)</li>
-							<li class="mdl-menu__item mdl-menu__item--full-bleed-divider" @click="sort('publisher', true)">Publisher (Z - A)</li>
-							<li class="mdl-menu__item" @click="sort('publishedOn', true)">Newest Posts First</li>
-							<li class="mdl-menu__item" @click="sort('publishedOn', false)">Oldest Posts First</li>
-						</ul>
-					</nav>
+					<span>Hackerearth</span>
 				</div>
 			</header>
 			<main class="mdl-layout__content page-content-holder">
 				<div class="mdl-grid page-content">
 					<div class="filters mdl-cell mdl-cell--3-col mdl-shadow--2dp">
 
+						<form @submit.prevent.default="search">
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-box">
+								<input class="mdl-textfield__input" type="text" id="searchBox" v-model="searchTerm">
+								<label class="mdl-textfield__label" for="searchBox">Title or Publisher</label>
+							</div>
+						</form>
+
+						<div class="sorter-holder">
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+								<input class="mdl-textfield__input" type="text" v-model="sorter.sortLabel" id="sorterHolder" readonly>
+								<label class="mdl-textfield__label" for="sorterHolder">Sort by</label>
+							</div>
+							<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect sorter-menu" for="sorterHolder">
+								<li class="mdl-menu__item" v-for="sorter in sorters" @click="sort(sorter)">
+									{{ sorter.sortLabel }}
+								</li>
+							</ul>
+						</div>
+
 						<h6>Select Category</h6>
-						<div v-for="category in categories">
+						<div v-if="loading.categories" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+						<div v-else v-for="category in categories">
 							<input type="checkbox" :id="'cat_'+category.id" v-model="category.selected" @change="onCategorySelected(category)">
 							<label :for="'cat_'+category.id">{{ category.value }}</label>
 						</div>
 
 						<h6>Select Publisher</h6>
-						<div v-for="publ in publishers">
+						<div v-if="loading.publishers" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+						<div v-else v-for="publ in publishers">
 							<input type="checkbox" :id="'pub_'+publ.id" v-model="publ.selected" @change="onPublisherSelected(publ)">
 							<label :for="'pub_'+publ.id">{{ publ.publisher }}</label>
 						</div>
@@ -61,10 +61,17 @@
 
 					</div>
 					<div class="content mdl-cell mdl-cell--9-col">
-						<h6 v-if="!isAnyFilterApplied" class="no-filters-label">
-							No Filters Applied
-						</h6>
-						<div v-else class="applied-filters">
+						<div class="status-bar mr-lt mr-rt">
+							<h6>{{ resultsDisplay }}</h6>
+							<div class="mdl-layout-spacer"></div>
+						</div>
+						<div class="applied-filters">
+							<span v-if="displaySearchTerm" class="applied-filter mdl-chip">
+    						<span class="mdl-chip__text">{{ displaySearchTerm }}</span>
+							</span>
+							<span v-if="sorter" class="applied-filter mdl-chip">
+    						<span class="mdl-chip__text">{{ sorter ? sorter.sortLabel : "" }}</span>
+							</span>
 							<span class="applied-filter mdl-chip mdl-chip--deletable" v-for="catFilter in appliedFilters.getFilters(consts.category)">
     						<span class="mdl-chip__text">{{ catFilter.displayValue }}</span>
 								<button type="button" class="mdl-chip__action" @click="removeCategoryFilter(catFilter.key)">
@@ -78,6 +85,7 @@
 								</button>
 							</span>
 						</div>
+						<div v-if="loading.feeds" class="feeds-loader mdl-spinner mdl-js-spinner is-active"></div>
 						<div class="feeds-holder mdl-grid">
 							<div class="feed-item mdl-cell mdl-cell--6-col mdl-shadow--2dp" v-for="item in feeds">
 								<p class="feed-item__title">{{ item.title }}</p>
@@ -85,6 +93,9 @@
 								<p class="feed-item__category">{{ item.category }}</p>
 								<p class="feed-item__published-on">{{ item.publishedOnStr }}</p>
 							</div>
+						</div>
+						<div v-if="noFeeds" class="no-feeds">
+							: (
 						</div>
 					</div>
 				</div>

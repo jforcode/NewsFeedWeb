@@ -2,10 +2,6 @@ body {
 	background: #FAFAFA;
 }
 
-#srchBox::placeholder {
-	color: #CFD8DC;
-}
-
 .page-content-holder {
 	position: relative;
 }
@@ -19,10 +15,32 @@ body {
 .filters {
 	background-color: #FFFFFF;
 	padding-left: 80px;
+	padding-right: 32px;
 	margin: 0 !important;
 }
 
+.search-box {
+	margin-top: 16px;
+}
+
+.sorter-holder {
+	position: relative;
+}
+
+.sorter-holder .mdl-menu__outline,
+ .sorter-holder .mdl-menu__container {
+	width: 100% !important;
+}
+
+.sorter-menu {
+	width: 100% !important;
+}
+
 .content {
+}
+
+.status-bar {
+	display: flex;
 }
 
 .no-filters-label {
@@ -43,6 +61,10 @@ body {
 	margin-left: 0;
 }
 
+.feeds-loader {
+	margin: 10% 50%;
+}
+
 .feeds-holder {
 }
 
@@ -51,6 +73,10 @@ body {
 	padding: 16px;
 }
 
+.no-feeds {
+	margin: 10% 40%;
+	font-size: 10em;
+}
 
 .all-pubs-dialog {
 	width: 70%;

@@ -6,6 +6,12 @@ import util from './util.js';
 const apiUrl = 'http://localhost:8080';
 const filterLimit = 5;
 
+const Sorter = function(sortBy, descOrder, sortLabel) {
+	this.sortBy = sortBy;
+	this.descOrder = descOrder;
+	this.sortLabel = sortLabel;
+}
+
 const app = new Vue({
 	el: '#feedApp',
 
@@ -14,8 +20,20 @@ const app = new Vue({
 			publisher: 'Publisher',
 			category: 'Category'
 		},
+		sorters: [
+			new Sorter('publishedOn', true, 'Newest Posts'),
+			new Sorter('publishedOn', false, 'Oldest Posts'),
+			new Sorter('publisher', false, 'Publisher (A - Z)'),
+			new Sorter('publisher', false, 'Publisher (Z - A)')
+		],
+		loading: {
+			feeds: true,
+			categories: true,
+			publishers: true
+		},
 
 		allPubsDialog: null,
+		displaySearchTerm: '',
 
 		categories: [],
 
@@ -23,9 +41,7 @@ const app = new Vue({
 		publishers: [],
 		allPublishers: [],
 
-		sortBy: 'publishedOn',
-		descOrder: true,
-
+		sorter: null,
 		searchTerm: '',
 		currPageNum: 1,
 
@@ -40,9 +56,8 @@ const app = new Vue({
 			this.loadFeeds();
 		},
 
-		sort: function(sortBy, descOrder) {
-			this.sortBy = sortBy;
-			this.descOrder = descOrder;
+		sort: function(sorter) {
+			this.sorter = sorter;
 
 			this.loadFeeds();
 		},
@@ -112,24 +127,32 @@ const app = new Vue({
 		},
 
 		loadCategories: async function () {
+			this.loading.categories = true;
 			var result = await this.fetchCategories();
 
 			this.categories = result.data.map(getUiCategory);	
+			this.loading.categories = false;
 		},
 
 		loadPublishers: async function () {
+			this.loading.publishers = true;
 			var result = await this.fetchPublishers(filterLimit);
 
 			var i = 1;
 			this.countPublishers = result.data.countAllPublishers;
 			this.publishers = result.data.publishers.map(apiPublisher => getUiPublisher(apiPublisher, i++));
+			this.loading.publishers = false;
 		},
 
 		loadFeeds: util.debounce(async function () {
+			this.loading.feeds = true;
 			var result = await this.fetchFeeds()
 
 			this.countAllFeeds = result.data.countAllFeeds;
-			this.feeds = result.data.feeds.map(getUiFeed);			
+			this.feeds = result.data.feeds.map(getUiFeed);
+
+			this.displaySearchTerm = this.searchTerm;
+			this.loading.feeds = false;
 		}, 500),
 
 		fetchCategories: function() {
@@ -143,18 +166,15 @@ const app = new Vue({
 		},
 
 		fetchFeeds: function() {
-			var params = {
-				sort: {
-					sortBy: this.sortBy,
-					descOrder: this.descOrder
-				},
-				filter: {
-					categoryIds: this.appliedFilters.categories,
-					publishers: this.appliedFilters.publishers
-				},
-				page: this.currPageNum,
-				srch: this.searchTerm
-			};
+			var catFilters = this.appliedFilters.getFilters(this.consts.category);
+			var categoryIds = catFilters ? catFilters.map(filter => filter.key) : [];
+
+			var pubFilters = this.appliedFilters.getFilters(this.consts.publisher);
+			var publishers = pubFilters ? pubFilters.map(filter => filter.key) : [];
+
+			var params = {   sort: {     sortBy: this.sorter.sortBy,     descOrder:
+			this.sorter.descOrder   },   filter: {     categoryIds,     publishers
+			},   page: this.currPageNum,   srch: this.searchTerm };
 
 			return axios.post(apiUrl + '/feed', params);
 		}
@@ -163,11 +183,22 @@ const app = new Vue({
 	computed: {
 		isAnyFilterApplied: function () {
 			return this.appliedFilters.getCountFilters() > 0;
+		},
+		resultsDisplay: function () {
+			return this.feeds.length > 0
+				? "Showing " + this.feeds.length + " of " + this.countAllFeeds + " posts"
+				: this.loading.feeds
+					? "Loading..."
+					: "No posts found! Try some other filters!";
+		},
+		noFeeds: function () {
+			return !this.loading.feeds && this.feeds.length === 0;
 		}
 	},
 
 	created: function() {
 		this.allPubsDialog = document.querySelector('#allPubsDialog');
+		this.sorter = this.sorters[0];
 
 		this.loadCategories();
 		this.loadPublishers();
