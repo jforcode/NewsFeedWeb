@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
+import fltr from './filters.js';
 
 const apiUrl = 'http://localhost:8080';
 const filterLimit = 5;
@@ -20,23 +21,20 @@ const app = new Vue({
 		countPublishers: 0,
 		publishers: [],
 		allPublishers: [],
-		mapSelectedPubs: {},
 
 		sortBy: 'publishedOn',
 		descOrder: true,
 
 		searchTerm: '',
-		appliedFilters: {
-			categories: [],
-			publishers: []
-		},
 		currPageNum: 1,
 
 		countAllFeeds: 0,
-		feeds: []
+		feeds: [],
+
+		appliedFilters: new fltr.FiltersHolder()
 	},
 
-	// TODO: loading of feeds should be throttled
+	// TODO: loading of feeds should be debounced
 	methods: {
 		search: function() {
 			this.loadFeeds();
@@ -51,59 +49,48 @@ const app = new Vue({
 
 		onCategorySelected: function(category) {
 			category.selected ?
-				this.addCategoryFilter(category.value) :
-				this.removeCategoryFilter(category.value);
+				this.addCategoryFilter(category, true) :
+				this.removeCategoryFilter(category.id);				
 
 			this.loadFeeds();
 		},
 
-		onPublisherSelected: function(publisher) {
-			publisher.selected ?
-				this.addPublisherFilter(publisher.displayStr) :
-				this.removePublisherFilter(publisher.displayStr);
+		onPublisherSelected: function(publ) {
+			publ.selected ?
+				this.addPublisherFilter(publ, true) :
+				this.removePublisherFilter(publ.publisher);
 
 			this.loadFeeds();
 		},
 
-		addCategoryFilter: function (value) {
-			this.appliedFilters.categories.push(value);			
+		addCategoryFilter: function (category, addOnRemove) {
+			var onRemoveHandler = addOnRemove 
+				? function () { category.selected = false; }
+				: null;
+			var filter = new fltr.Filter(this.consts.category, category.id, category.value, null, onRemoveHandler);
+			this.appliedFilters.addFilter(filter);
 		},
 
-		addPublisherFilter: function (value) {
-			this.appliedFilters.publishers.push(value);
-			this.mapSelectedPubs[value] = true;
+		removeCategoryFilter: function (categoryId) {
+			this.appliedFilters.removeFilter(this.consts.category, categoryId);
 		},
 
-		removeCategoryFilter: function (value) {
-			var ind = this.appliedFilters.categories.findIndex(category => category === value);
-			if (ind !== -1) {
-				this.appliedFilters.categories.splice(ind, 1);
-			}
+		addPublisherFilter: function (publ, addOnRemove) {
+			var onRemoveHandler = addOnRemove 
+				? function () { publ.selected = false; }
+				: null;
+			var filter = new fltr.Filter(this.consts.publisher, publ.publisher, publ.publisher, null, onRemoveHandler);
+			this.appliedFilters.addFilter(filter);
 		},
 
-		removePublisherFilter: function (value) {
-			var ind = this.appliedFilters.publishers.findIndex(publisher => publisher === value);
-			if (ind !== -1) {
-				this.appliedFilters.publishers.splice(ind, 1);
-				delete this.mapSelectedPubs[value];
-			}
+		removePublisherFilter: function (publisher) {
+			this.appliedFilters.removeFilter(this.consts.publisher, publisher);
 		},
 
 		selectPublishersFromDialog: function() {
 			this.allPublishers.forEach(publisher => {
-				var uiPubDisplayStr = publisher.displayStr;
-				if (publisher.selected) {
-					if (!this.mapSelectedPubs[uiPubDisplayStr]) {
-						this.addPublisherFilter(uiPubDisplayStr);
-					}
-					var mainUiPub = this.publishers.find(uiPublisher => uiPublisher.displayStr === uiPubDisplayStr);
-					if (mainUiPub) {
-						mainUiPub.selected = true;
-					}
-				}
 			});
 
-			this.loadFeeds();
 			allPubsDialog.close();
 		},
 
@@ -118,7 +105,6 @@ const app = new Vue({
 			this.countPublishers = result.data.countAllPublishers;
 			this.allPublishers = result.data.publishers.map(apiPublisher => {
 				var uiPublisher = getUiPublisher(apiPublisher, i++);
-				uiPublisher.selected = this.mapSelectedPubs[uiPublisher.displayStr];
 				return uiPublisher;
 			});
 
@@ -176,8 +162,7 @@ const app = new Vue({
 
 	computed: {
 		isAnyFilterApplied: function () {
-			return this.appliedFilters.categories.length !== 0 
-				|| this.appliedFilters.publishers.length !== 0;
+			return this.appliedFilters.getCountFilters() > 0;
 		}
 	},
 
@@ -203,9 +188,8 @@ function getUiPublisher(apiPublisher, id) {
 	return {
 		id,
 		publisher: apiPublisher.publisher,
-		publisherUrl: apiPublisher.publisherUrl,
-		selected: false,
-		displayStr: apiPublisher.publisher + ' (' + apiPublisher.publisherUrl + ')'
+		publisherUrls: apiPublisher.publisherUrls,
+		selected: false
 	};
 }
 

@@ -33,15 +33,6 @@ module.exports = [
     output: {
       filename: "bundle.js"
     },
-    module: {
-      loaders: [{
-        test: /\.js$/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['env']
-        }
-      }]
-    },
     resolve: {
       alias: {
         vue: 'vue/dist/vue.js'
