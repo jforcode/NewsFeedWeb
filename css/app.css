@@ -61,6 +61,12 @@ body {
 	margin-left: 0;
 }
 
+.page-control {
+	align-self: center;
+	margin: 8px;
+	font-size: 1.2em;
+}
+
 .feeds-loader {
 	margin: 10% 50%;
 }

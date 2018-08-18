@@ -43,9 +43,12 @@ const app = new Vue({
 
 		sorter: null,
 		searchTerm: '',
-		currPageNum: 1,
+
+		currPageNum: 0,
+		lastPageNum: 0,
 
 		countAllFeeds: 0,
+		feedPageSize: 0,
 		feeds: [],
 
 		appliedFilters: new fltr.FiltersHolder()
@@ -62,10 +65,14 @@ const app = new Vue({
 			this.loadFeeds();
 		},
 
+		loadPage: function (pageNum) {
+			this.loadFeeds(pageNum);
+		},
+
 		onCategorySelected: function(category) {
 			category.selected ?
 				this.addCategoryFilter(category, true) :
-				this.removeCategoryFilter(category.id);				
+				this.removeCategoryFilter(category.id);
 
 			this.loadFeeds();
 		},
@@ -78,33 +85,32 @@ const app = new Vue({
 			this.loadFeeds();
 		},
 
-		addCategoryFilter: function (category, addOnRemove) {
-			var onRemoveHandler = addOnRemove 
-				? function () { category.selected = false; }
-				: null;
+		addCategoryFilter: function(category, addOnRemove) {
+			var onRemoveHandler = addOnRemove ?
+				function() { category.selected = false; } :
+				null;
 			var filter = new fltr.Filter(this.consts.category, category.id, category.value, null, onRemoveHandler);
 			this.appliedFilters.addFilter(filter);
 		},
 
-		removeCategoryFilter: function (categoryId) {
+		removeCategoryFilter: function(categoryId) {
 			this.appliedFilters.removeFilter(this.consts.category, categoryId);
 		},
 
-		addPublisherFilter: function (publ, addOnRemove) {
-			var onRemoveHandler = addOnRemove 
-				? function () { publ.selected = false; }
-				: null;
+		addPublisherFilter: function(publ, addOnRemove) {
+			var onRemoveHandler = addOnRemove ?
+				function() { publ.selected = false; } :
+				null;
 			var filter = new fltr.Filter(this.consts.publisher, publ.publisher, publ.publisher, null, onRemoveHandler);
 			this.appliedFilters.addFilter(filter);
 		},
 
-		removePublisherFilter: function (publisher) {
+		removePublisherFilter: function(publisher) {
 			this.appliedFilters.removeFilter(this.consts.publisher, publisher);
 		},
 
 		selectPublishersFromDialog: function() {
-			this.allPublishers.forEach(publisher => {
-			});
+			this.allPublishers.forEach(publisher => {});
 
 			allPubsDialog.close();
 		},
@@ -126,15 +132,15 @@ const app = new Vue({
 			allPubsDialog.showModal();
 		},
 
-		loadCategories: async function () {
+		loadCategories: async function() {
 			this.loading.categories = true;
 			var result = await this.fetchCategories();
 
-			this.categories = result.data.map(getUiCategory);	
+			this.categories = result.data.map(getUiCategory);
 			this.loading.categories = false;
 		},
 
-		loadPublishers: async function () {
+		loadPublishers: async function() {
 			this.loading.publishers = true;
 			var result = await this.fetchPublishers(filterLimit);
 
@@ -144,12 +150,19 @@ const app = new Vue({
 			this.loading.publishers = false;
 		},
 
-		loadFeeds: util.debounce(async function () {
+		loadFeeds: util.debounce(async function(pageNum) {
 			this.loading.feeds = true;
-			var result = await this.fetchFeeds()
+			if (!pageNum) {
+				pageNum = this.currPageNum;
+			}
+			var result = await this.fetchFeeds(pageNum)
 
 			this.countAllFeeds = result.data.countAllFeeds;
+			this.feedPageSize = result.data.pageSize;
 			this.feeds = result.data.feeds.map(getUiFeed);
+
+			this.currPageNum = pageNum;
+			this.lastPageNum = this.countAllFeeds / this.feedPageSize;
 
 			this.displaySearchTerm = this.searchTerm;
 			this.loading.feeds = false;
@@ -160,39 +173,57 @@ const app = new Vue({
 		},
 
 		fetchPublishers: function(limit) {
-			return limit > 0
-				? axios.get(apiUrl + '/publishers', { params: { limit } })
-				: axios.get(apiUrl + '/publishers');
+			return limit > 0 ?
+				axios.get(apiUrl + '/publishers', { params: { limit } }) :
+				axios.get(apiUrl + '/publishers');
 		},
 
-		fetchFeeds: function() {
+		fetchFeeds: function(page) {
 			var catFilters = this.appliedFilters.getFilters(this.consts.category);
 			var categoryIds = catFilters ? catFilters.map(filter => filter.key) : [];
 
 			var pubFilters = this.appliedFilters.getFilters(this.consts.publisher);
 			var publishers = pubFilters ? pubFilters.map(filter => filter.key) : [];
 
-			var params = {   sort: {     sortBy: this.sorter.sortBy,     descOrder:
-			this.sorter.descOrder   },   filter: {     categoryIds,     publishers
-			},   page: this.currPageNum,   srch: this.searchTerm };
+			var params = {
+				sort: {
+					sortBy: this.sorter.sortBy,
+					descOrder: this.sorter.descOrder
+				},
+				filter: {
+					categoryIds,
+					publishers
+				},
+				page,
+				srch: this.searchTerm
+			};
 
 			return axios.post(apiUrl + '/feed', params);
 		}
 	},
 
 	computed: {
-		isAnyFilterApplied: function () {
+		isAnyFilterApplied: function() {
 			return this.appliedFilters.getCountFilters() > 0;
 		},
-		resultsDisplay: function () {
-			return this.feeds.length > 0
-				? "Showing " + this.feeds.length + " of " + this.countAllFeeds + " posts"
-				: this.loading.feeds
-					? "Loading..."
-					: "No posts found! Try some other filters!";
+		resultsDisplay: function() {
+			return this.feeds.length > 0 ?
+				"Showing " + this.currPageNum + util.getNumberSuffix(this.currPageNum) + " of " + this.lastPageNum + " pages" :
+				this.loading.feeds ?
+				"Loading..." :
+				"No posts found! Try some other filters!";
 		},
-		noFeeds: function () {
+		noFeeds: function() {
 			return !this.loading.feeds && this.feeds.length === 0;
+		},
+		pageLabelVisible: function () {
+			return !this.loading.feeds && this.feeds.length > 0;
+		},
+		firstVisible: function() {
+			return !this.loading.feeds && this.currPageNum > 1;
+		},
+		lastVisible: function () {
+			return !this.loading.feeds && this.currPageNum < this.lastPageNum;
 		}
 	},
 
@@ -202,7 +233,7 @@ const app = new Vue({
 
 		this.loadCategories();
 		this.loadPublishers();
-		this.loadFeeds();
+		this.loadFeeds(1);
 	}
 });
 

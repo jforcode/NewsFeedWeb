@@ -64,6 +64,10 @@
 						<div class="status-bar mr-lt mr-rt">
 							<h6>{{ resultsDisplay }}</h6>
 							<div class="mdl-layout-spacer"></div>
+							<p v-if="firstVisible" class="page-control" @click="loadPage(1)">First</p>
+							<p v-if="firstVisible" class="page-control" @click="loadPage(currPageNum - 1)">Prev</p>
+							<p v-if="lastVisible" class="page-control" @click="loadPage(currPageNum + 1)">Next</p>
+							<p v-if="lastVisible" class="page-control" @click="loadPage(lastPageNum)">Last</p>
 						</div>
 						<div class="applied-filters">
 							<span v-if="displaySearchTerm" class="applied-filter mdl-chip">
