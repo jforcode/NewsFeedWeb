@@ -171,6 +171,14 @@ a {
 	overflow-x: scroll;
 }
 
+.all-pubs__title-holder {
+	display: flex;
+	align-items: baseline;
+	margin-right: 16px;
+}
+.all-pubs__title {
+	font-size: 2em;
+}
 .all-pubs__col {
 	width: 40%;
 }

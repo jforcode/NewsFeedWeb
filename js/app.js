@@ -22,8 +22,8 @@ const app = new Vue({
 			category: 'Category'
 		},
 		sorters: [
-			new Sorter('publishedOn', true, 'Latest Posts'),
-			new Sorter('publishedOn', false, 'Oldest Posts'),
+			new Sorter('publishedOn', true, 'Latest Posts First'),
+			new Sorter('publishedOn', false, 'Oldest Posts First'),
 			new Sorter('publisher', false, 'Publisher (A - Z)'),
 			new Sorter('publisher', true, 'Publisher (Z - A)')
 		],
@@ -42,6 +42,7 @@ const app = new Vue({
 		countPublishers: 0,
 		publishers: [],
 		allPublishers: [],
+		numSelectedAllPublishers: 0,
 
 		sorter: null,
 		searchTerm: '',
@@ -87,6 +88,10 @@ const app = new Vue({
 			publ.selected ?
 				this.addPublisherFilter(publ, true) :
 				this.removePublisherFilter(publ.publisher);
+		},
+
+		onAllPublisherSelected: function (publ) {
+			this.numSelectedAllPublishers += publ.selected ? 1 : -1;
 		},
 
 		addCategoryFilter: function(category, addOnRemove) {
@@ -142,6 +147,7 @@ const app = new Vue({
 		},
 
 		closeAllPubsDialog: function() {
+			this.numSelectedAllPublishers = 0;
 			allPubsDialog.close();
 		},
 
@@ -153,16 +159,19 @@ const app = new Vue({
 				return;
 			}
 
+			var totalSelected = 0;
 			var i = 1;
 			this.countPublishers = result.data.countAllPublishers;
 			this.allPublishers = result.data.publishers.map(apiPublisher => {
 				var uiPublisher = getUiPublisher(apiPublisher, i);
 				var filterExists = this.appliedFilters.getFilter(this.consts.publisher, apiPublisher.publisher);
 				uiPublisher.selected = !!filterExists;
+				totalSelected += uiPublisher.selected ? 1 : 0;
 				i++;
 				return uiPublisher;
 			});
 
+			this.numSelectedAllPublishers = totalSelected;
 			allPubsDialog.showModal();
 		},
 
