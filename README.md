@@ -17,6 +17,7 @@ This is the front-end webpack based webserver for the app. It basically serves s
 
 ```
 git clone https://github.com/jforcode/NewsFeedWeb.git
+cd NewsFeedWeb
 npm install
 npm start
 
