@@ -2,6 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import fltr from './filters.js';
 import util from './util.js';
+import moment from 'moment';
 
 const apiUrl = 'http://localhost:8080';
 const filterLimit = 5;
@@ -24,7 +25,7 @@ const app = new Vue({
 			new Sorter('publishedOn', true, 'Latest Posts'),
 			new Sorter('publishedOn', false, 'Oldest Posts'),
 			new Sorter('publisher', false, 'Publisher (A - Z)'),
-			new Sorter('publisher', false, 'Publisher (Z - A)')
+			new Sorter('publisher', true, 'Publisher (Z - A)')
 		],
 		loading: {
 			feeds: true,
@@ -32,7 +33,7 @@ const app = new Vue({
 			publishers: true
 		},
 		noNetwork: false,
-
+		
 		allPubsDialog: null,
 		displaySearchTerm: '',
 
@@ -60,6 +61,12 @@ const app = new Vue({
 			this.loadFeeds();
 		},
 
+		clearSearchTerm: function () {
+			this.searchTerm = '';
+
+			this.loadFeeds();
+		},
+
 		sort: function(sorter) {
 			this.sorter = sorter;
 
@@ -68,6 +75,13 @@ const app = new Vue({
 
 		loadPage: function (pageNum) {
 			this.loadFeeds(pageNum);
+		},
+
+		getFeedItemClass: function (item) {
+			return {
+				'feed-item--tech': item.category.id === "t",
+				'feed-item--biz': item.category.id === "b"
+			}
 		},
 
 		onCategorySelected: function(category) {
@@ -169,7 +183,7 @@ const app = new Vue({
 			this.feeds = result.data.feeds.map(getUiFeed);
 
 			this.currPageNum = pageNum;
-			this.lastPageNum = this.countAllFeeds / this.feedPageSize;
+			this.lastPageNum = Math.ceil(this.countAllFeeds / this.feedPageSize);
 
 			this.displaySearchTerm = this.searchTerm;
 			this.loading.feeds = false;
@@ -206,6 +220,14 @@ const app = new Vue({
 			};
 
 			return axios.post(apiUrl + '/feed', params);
+		},
+		loadInitialData: function () {
+			this.allPubsDialog = document.querySelector('#allPubsDialog');
+			this.sorter = this.sorters[0];
+
+			this.loadCategories();
+			this.loadPublishers();
+			this.loadFeeds(1);
 		}
 	},
 
@@ -214,16 +236,16 @@ const app = new Vue({
 			return this.appliedFilters.getCountFilters() > 0;
 		},
 		resultsDisplay: function() {
-			return this.feeds.length > 0 ?
-				"Showing " + this.currPageNum + util.getNumberSuffix(this.currPageNum) + " of " + this.lastPageNum + " pages" :
-				this.loading.feeds ?
-				"Loading..." :
-				"No posts found! Try some other filters!";
+			return this.feeds.length > 0 
+				? "Showing " + this.feeds.length + " posts"
+				: this.loading.feeds
+					? "Loading..."
+					: "No posts found! Try some other filters!";
 		},
 		noFeeds: function() {
 			return !this.loading.feeds && this.feeds.length === 0;
 		},
-		pageLabelVisible: function () {
+		paginationVisible: function () {
 			return !this.loading.feeds && this.feeds.length > 0;
 		},
 		firstVisible: function() {
@@ -235,12 +257,7 @@ const app = new Vue({
 	},
 
 	created: function() {
-		this.allPubsDialog = document.querySelector('#allPubsDialog');
-		this.sorter = this.sorters[0];
-
-		this.loadCategories();
-		this.loadPublishers();
-		this.loadFeeds(1);
+		this.loadInitialData();
 	}
 });
 
@@ -264,6 +281,6 @@ function getUiPublisher(apiPublisher, id) {
 
 function getUiFeed(apiFeed) {
 	var uiFeed = apiFeed;
-	uiFeed.publishedOnStr = new Date(apiFeed.publishedOn).toString();
+	uiFeed.publishedOnStr = moment(apiFeed.publishedOn).fromNow();
 	return uiFeed;
 }

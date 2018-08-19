@@ -19,8 +19,9 @@
     "webpack-dev-server": "^2.4.3"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "material-components-web": "^0.38.1",
-    "vue": "^2.5.17",
-    "axios": "^0.18.0"
+    "moment": "^2.22.2",
+    "vue": "^2.5.17"
   }
 }
