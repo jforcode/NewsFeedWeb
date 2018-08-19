@@ -28,7 +28,7 @@
 					<button class="mdl-button mdl-color--primary mdl-color-text--white mr-lt" @click="loadInitialData">Retry</button>
 				</div>
 				<div v-show="!noNetwork" class="mdl-grid page-content">
-					<div class="filters mdl-cell mdl-cell--4-col mdl-shadow--2dp">
+					<div class="filters mdl-cell mdl-cell--3-col mdl-shadow--2dp">
 
 						<form @submit.prevent.default="search">
 							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-box">
@@ -68,7 +68,7 @@
 						</div>
 						<button v-show="countPublishers > publishers.length" class="mdl-button mdl-js-button mdl-color-text--primary filter__show-all" @click="loadAllPublishers">SHOW ALL</button>
 					</div>
-					<div class="content mdl-cell mdl-cell--8-col">
+					<div class="content mdl-cell mdl-cell--9-col">
 						<div class="status-bar mr-lt">
 							<h6>{{ resultsDisplay }}</h6>
 							<div class="mdl-layout-spacer"></div>
