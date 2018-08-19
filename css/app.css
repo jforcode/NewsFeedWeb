@@ -18,9 +18,13 @@ body {
 }
 
 .page-content {
+	padding: 0 !important;
 }
 
 .filters {
+	position: fixed;
+	height: 100%;
+	overflow: scroll;
 	background-color: #FFFFFF;
 	padding-left: 80px;
 	padding-right: 32px;
@@ -45,6 +49,7 @@ body {
 }
 
 .content {
+	margin-left: 25%;
 }
 
 .status-bar {
