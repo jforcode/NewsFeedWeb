@@ -8,8 +8,10 @@ This is the front-end webpack based webserver for the app. It basically serves s
 
 - NodeJS + NPM 6.4.0
 - webpack for build
-- webpack-dev-server for development
-- Tested well on Chrome.
+- webpack-dev-server for dev environment
+- Material Design based UI using Material Design Lite
+- VueJS (non-component) based development
+- Works well on Chrome.
 
 ## Installation
 
@@ -20,3 +22,18 @@ npm start
 
 Open localhost:3000 to launch the app.
 ```
+
+## Current Features
+
+- Displays paginated news feed.
+- Search based on title or publisher.
+- Sort by publisher or published on.
+- Filter by category or publisher.
+
+## Further plans
+
+- All major browsers' compatibility and mobile-first design.
+- Integrate with main stream news apps, and show current data.
+- An overall personalized app with authentication, bookmarks, favorites, notifications etc.
+- Highlight broken links, fetch an image from the post to display on the app.
+- Modern UI, highly responsive, custom design and branding, theme changer etc.
