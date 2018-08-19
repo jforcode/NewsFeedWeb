@@ -152,10 +152,16 @@ a {
 	height: 320px;
 }
 .all-pubs {
+	margin: 16px;
+	padding: 16px 0;
 	display: flex;
+	flex-direction: column;
 	flex-wrap: wrap;
 	height: 50%;
-	overflow: scroll;
+	overflow-x: scroll;
+}
+.all-pubs-col {
+	max-width: 40%;
 }
 
 .flex-row {

@@ -23,13 +23,11 @@
 				</div>
 			</header>
 			<main class="mdl-layout__content page-content-holder">
-				<div v-if="noNetwork" class="no-network">
+				<div v-show="noNetwork" class="no-network">
 					<p class="no-network__title">Couldn't connect to the servers!</p>
-					<button class="mdl-button mdl-color--primary mdl-color-text--white mr-lt">
-						Retry
-					</button>
+					<button class="mdl-button mdl-color--primary mdl-color-text--white mr-lt" @click="loadInitialData">Retry</button>
 				</div>
-				<div v-else class="mdl-grid page-content">
+				<div v-show="!noNetwork" class="mdl-grid page-content">
 					<div class="filters mdl-cell mdl-cell--3-col mdl-shadow--2dp">
 
 						<form @submit.prevent.default="search">
@@ -52,8 +50,8 @@
 						</div>
 
 						<p class="filter__type mdl-color-text--primary">Select Category</p>
-						<div v-if="loading.categories" class="mdl-progress mdl-js-progress mdl-progress__indeterminate  mdl-menu__item--full-bleed-divider"></div>
-						<div v-else>
+						<div v-show="loading.categories" class="mdl-progress mdl-js-progress mdl-progress__indeterminate  mdl-menu__item--full-bleed-divider"></div>
+						<div v-show="!loading.categories">
 							<label v-for="category in categories" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="'cat_'+category.id">
 								<input type="checkbox" :id="'cat_'+category.id" v-model="category.selected" @change="onCategorySelected(category)" class="mdl-checkbox__input">
 								<span class="mdl-checkbox__label filter__value">{{ category.value }}</span>
@@ -61,20 +59,20 @@
 						</div>
 
 						<p class="filter__type mdl-color-text--primary">Select Publisher</p>
-						<div v-if="loading.publishers" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-						<div v-else v-for="publ in publishers">
+						<div v-show="loading.publishers" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+						<div v-show="!loading.publishers" v-for="publ in publishers">
 							<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="'pub_'+publ.id">
 								<input type="checkbox" :id="'pub_'+publ.id" v-model="publ.selected" @change="onPublisherSelected(publ)" class="mdl-checkbox__input">
 								<span class="mdl-checkbox__label filter__value">{{ publ.publisher }}</span>
 							</label>
 						</div>
-						<button v-if="countPublishers > publishers.length" class="mdl-button mdl-js-button mdl-color-text--primary filter__show-all" @click="loadAllPublishers">SHOW ALL</button>
+						<button v-show="countPublishers > publishers.length" class="mdl-button mdl-js-button mdl-color-text--primary filter__show-all" @click="loadAllPublishers">SHOW ALL</button>
 					</div>
 					<div class="content mdl-cell mdl-cell--9-col">
 						<div class="status-bar mr-lt">
 							<h6>{{ resultsDisplay }}</h6>
 							<div class="mdl-layout-spacer"></div>
-							<div v-if="paginationVisible" class="flex-row">
+							<div v-show="paginationVisible" class="flex-row">
 								<button :disabled="!firstVisible" class="mdl-button mdl-js-button mdl-button--icon mdl-button--primary page-control" @click="loadPage(1)">
 									<i class="material-icons">first_page</i>
 								</button>
@@ -131,10 +129,10 @@
 								</div>
 							</div>
 						</div>
-						<div v-if="noFeeds" class="no-feeds">
+						<div v-show="noFeeds" class="no-feeds">
 							: (
 						</div>
-						<div class="flex-row" v-if="paginationVisible" class="status-bar mr-lt mr-rt">
+						<div class="flex-row" v-show="paginationVisible" class="status-bar mr-lt mr-rt">
 							<div class="mdl-layout-spacer"></div>
 							<button :disabled="!firstVisible" class="mdl-button mdl-js-button mdl-button--icon mdl-button--primary page-control" @click="loadPage(1)">
 								<i class="material-icons">first_page</i>
@@ -160,10 +158,10 @@
 			<dialog class="mdl-dialog all-pubs-dialog" id="allPubsDialog">
 				<p class="mdl-dialog__title">All Publishers</p>
 				<div class="mdl-dialog__content all-pubs">
-					<div v-for="publ in allPublishers">
-						<input type="checkbox" :id="'allPub_'+publ.id" v-model="publ.selected">
-						<label :for="'allPub_'+publ.id">{{ publ.publisher }}</label>
-					</div>
+						<label v-for="publ in allPublishers" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect all-pubs-col" :for="'allPub_'+publ.id">
+							<input type="checkbox" :id="'allPub_'+publ.id" v-model="publ.selected" class="mdl-checkbox__input">
+							<span class="mdl-checkbox__label filter__value">{{ publ.publisher }}</span>
+						</label>
 				</div>
 				<div class="mdl-dialog__actions">
 					<button type="button" class="mdl-button mdl-color--primary mdl-color-text--white" @click="selectPublishersFromDialog">Apply Filters</button>

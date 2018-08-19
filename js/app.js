@@ -128,7 +128,12 @@ const app = new Vue({
 		},
 
 		loadAllPublishers: async function() {
-			var result = await this.fetchPublishers();
+			try {
+				var result = await this.fetchPublishers();
+			} catch (err) {
+				this.noNetwork = true;
+				return;
+			}
 
 			var i = 1;
 			this.countPublishers = result.data.countAllPublishers;
@@ -142,15 +147,25 @@ const app = new Vue({
 
 		loadCategories: async function() {
 			this.loading.categories = true;
-			var result = await this.fetchCategories();
-
+			try {
+				var result = await this.fetchCategories();
+			} catch (err) {
+				this.noNetwork = true;
+				return;
+			}
+			
 			this.categories = result.data.map(getUiCategory);
 			this.loading.categories = false;
 		},
 
 		loadPublishers: async function() {
 			this.loading.publishers = true;
-			var result = await this.fetchPublishers(filterLimit);
+			try {
+				var result = await this.fetchPublishers(filterLimit);
+			} catch (err) {
+				this.noNetwork = true;
+				return;
+			}
 
 			var i = 1;
 			this.countPublishers = result.data.countAllPublishers;
@@ -184,13 +199,21 @@ const app = new Vue({
 		}, 500),
 
 		fetchCategories: function() {
-			return axios.get(apiUrl + '/categories');
+			try {
+				return axios.get(apiUrl + '/categories');
+			} catch (err) {
+				throw err;
+			}
 		},
 
 		fetchPublishers: function(limit) {
-			return limit > 0 ?
-				axios.get(apiUrl + '/publishers', { params: { limit } }) :
-				axios.get(apiUrl + '/publishers');
+			try {
+				return limit > 0 ?
+					axios.get(apiUrl + '/publishers', { params: { limit } }) :
+					axios.get(apiUrl + '/publishers');
+			} catch (err) {
+				throw err;
+			}
 		},
 
 		fetchFeeds: function(page) {
@@ -213,12 +236,13 @@ const app = new Vue({
 				srch: this.searchTerm
 			};
 
-			return axios.post(apiUrl + '/feed', params);
+			try {
+				return axios.post(apiUrl + '/feed', params);
+			} catch (err) {
+				throw err;
+			}
 		},
 		loadInitialData: function () {
-			this.allPubsDialog = document.querySelector('#allPubsDialog');
-			this.sorter = this.sorters[0];
-
 			this.loadCategories();
 			this.loadPublishers();
 			this.loadFeeds(1);
@@ -250,7 +274,10 @@ const app = new Vue({
 		}
 	},
 
-	created: function() {
+	created: function() {		
+		this.allPubsDialog = document.querySelector('#allPubsDialog');
+		this.sorter = this.sorters[0];
+
 		this.loadInitialData();
 	}
 });
