@@ -77,13 +77,6 @@ const app = new Vue({
 			this.loadFeeds(pageNum);
 		},
 
-		getFeedItemClass: function (item) {
-			return {
-				'feed-item--tech': item.category.id === "t",
-				'feed-item--biz': item.category.id === "b"
-			}
-		},
-
 		onCategorySelected: function(category) {
 			category.selected ?
 				this.addCategoryFilter(category, true) :
@@ -170,6 +163,7 @@ const app = new Vue({
 			if (!pageNum) {
 				pageNum = this.currPageNum;
 			}
+			
 			try {
 				var result = await this.fetchFeeds(pageNum)
 			} catch (err) {
@@ -281,6 +275,8 @@ function getUiPublisher(apiPublisher, id) {
 
 function getUiFeed(apiFeed) {
 	var uiFeed = apiFeed;
+	uiFeed.publisherUrl = util.getUrl(apiFeed.publisherUrl);
+	uiFeed.url = util.getUrl(apiFeed.url);
 	uiFeed.publishedOnStr = moment(apiFeed.publishedOn).fromNow();
 	return uiFeed;
 }

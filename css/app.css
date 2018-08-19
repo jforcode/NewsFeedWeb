@@ -6,6 +6,11 @@ body {
 	background: #FAFAFA;
 }
 
+a {
+	text-decoration: none;
+	color: rgba(0, 0, 0, 0.87);
+}
+
 .page-content-holder {
 	position: relative;
 }
@@ -113,17 +118,8 @@ body {
 	flex-direction: column;
 }
 
-.feed-item--tech {
-}
-.feed-item--biz {
-}
-
-.feed-item--tech .feed-item__publisher {
-	color: #E65100;
-}
-
-.feed-item--biz .feed-item__publisher {
-	color: #1B5E20;
+.feed-item__publisher {
+	font-style: italic;
 }
 
 .feed-item__title {
@@ -134,8 +130,8 @@ body {
 
 .feed-item__bottom-row {
 	display: flex;
+	align-items: flex-end;
 	margin-top: 16px;
-
 }
 
 .feed-item__category {

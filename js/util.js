@@ -21,9 +21,15 @@ var getNumberSuffix = function (number) {
 		case 3: return "rd";
 		default: return "th";
 	} 
+};
+
+var getUrl = function (url) {
+	return url.startsWith('http', 'https')
+		? url : 'https://' + url;
 }
 
 module.exports = {
 	debounce,
-	getNumberSuffix
+	getNumberSuffix,
+	getUrl
 };
