@@ -31,6 +31,7 @@ const app = new Vue({
 			categories: true,
 			publishers: true
 		},
+		noNetwork: false,
 
 		allPubsDialog: null,
 		displaySearchTerm: '',
@@ -155,8 +156,14 @@ const app = new Vue({
 			if (!pageNum) {
 				pageNum = this.currPageNum;
 			}
-			var result = await this.fetchFeeds(pageNum)
+			try {
+				var result = await this.fetchFeeds(pageNum)
+			} catch (err) {
+				this.noNetwork = true;
+				return;
+			}
 
+			this.noNetwork = false;
 			this.countAllFeeds = result.data.countAllFeeds;
 			this.feedPageSize = result.data.pageSize;
 			this.feeds = result.data.feeds.map(getUiFeed);
