@@ -33,6 +33,7 @@ Open localhost:3000 to launch the app.
 ## Further plans
 
 - All major browsers' compatibility and mobile-first design.
+- Front end tests.
 - Integrate with main stream news apps, and show current data.
 - An overall personalized app with authentication, bookmarks, favorites, notifications etc.
 - Highlight broken links, fetch an image from the post to display on the app.
