@@ -81,16 +81,12 @@ const app = new Vue({
 			category.selected ?
 				this.addCategoryFilter(category, true) :
 				this.removeCategoryFilter(category.id);
-
-			this.loadFeeds();
 		},
 
 		onPublisherSelected: function(publ) {
 			publ.selected ?
 				this.addPublisherFilter(publ, true) :
 				this.removePublisherFilter(publ.publisher);
-
-			this.loadFeeds();
 		},
 
 		addCategoryFilter: function(category, addOnRemove) {
@@ -99,10 +95,13 @@ const app = new Vue({
 				null;
 			var filter = new fltr.Filter(this.consts.category, category.id, category.value, null, onRemoveHandler);
 			this.appliedFilters.addFilter(filter);
+			this.loadFeeds();
 		},
 
 		removeCategoryFilter: function(categoryId) {
 			this.appliedFilters.removeFilter(this.consts.category, categoryId);
+
+			this.loadFeeds();
 		},
 
 		addPublisherFilter: function(publ, addOnRemove) {
@@ -111,10 +110,12 @@ const app = new Vue({
 				null;
 			var filter = new fltr.Filter(this.consts.publisher, publ.publisher, publ.publisher, null, onRemoveHandler);
 			this.appliedFilters.addFilter(filter);
+			this.loadFeeds();
 		},
 
 		removePublisherFilter: function(publisher) {
 			this.appliedFilters.removeFilter(this.consts.publisher, publisher);
+			this.loadFeeds();
 		},
 
 		selectPublishersFromDialog: function() {
@@ -155,7 +156,10 @@ const app = new Vue({
 			var i = 1;
 			this.countPublishers = result.data.countAllPublishers;
 			this.allPublishers = result.data.publishers.map(apiPublisher => {
-				var uiPublisher = getUiPublisher(apiPublisher, i++);
+				var uiPublisher = getUiPublisher(apiPublisher, i);
+				var filterExists = this.appliedFilters.getFilter(this.consts.publisher, apiPublisher.publisher);
+				uiPublisher.selected = !!filterExists;
+				i++;
 				return uiPublisher;
 			});
 
@@ -293,7 +297,7 @@ const app = new Vue({
 
 	created: function() {		
 		this.allPubsDialog = document.querySelector('#allPubsDialog');
-		this.sorter = this.sorters[0];
+		this.sorter = this.sorters[2];
 
 		this.loadInitialData();
 	}

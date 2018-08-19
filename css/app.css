@@ -67,6 +67,10 @@ a {
 
 .sorter-holder {
 	position: relative;
+	cursor: pointer !important;
+}
+.sorter-holder input {
+	cursor: pointer !important;
 }
 
 .sorter-holder .mdl-menu__outline,
