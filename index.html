@@ -98,7 +98,7 @@
 									<i class="material-icons">cancel</i>
 								</button>
 							</span>
-							<span v-if="sorter" class="applied-filter mdl-chip">
+							<span v-if="sorter && !loading.feeds" class="applied-filter mdl-chip">
 								<span class="mdl-chip__text">{{ sorter ? sorter.sortLabel : "" }}</span>
 							</span>
 							<span class="applied-filter mdl-chip mdl-chip--deletable" v-for="catFilter in appliedFilters.getFilters(consts.category)">
