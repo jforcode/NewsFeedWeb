@@ -28,7 +28,7 @@
 					<button class="mdl-button mdl-color--primary mdl-color-text--white mr-lt" @click="loadInitialData">Retry</button>
 				</div>
 				<div v-show="!noNetwork" class="mdl-grid page-content">
-					<div class="filters mdl-cell mdl-cell--3-col mdl-shadow--2dp">
+					<div class="filters mdl-cell mdl-cell--4-col mdl-shadow--2dp">
 
 						<form @submit.prevent.default="search">
 							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-box">
@@ -49,26 +49,26 @@
 							</ul>
 						</div>
 
-						<p class="filter__type mdl-color-text--primary">Select Category</p>
+						<p class="filter-type mdl-color-text--primary">Select Category</p>
 						<div v-show="loading.categories" class="mdl-progress mdl-js-progress mdl-progress__indeterminate  mdl-menu__item--full-bleed-divider"></div>
-						<div v-show="!loading.categories">
-							<label v-for="category in categories" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="'cat_'+category.id">
-								<input type="checkbox" :id="'cat_'+category.id" v-model="category.selected" @change="onCategorySelected(category)" class="mdl-checkbox__input">
-								<span class="mdl-checkbox__label filter__value">{{ category.value }}</span>
-							</label>
+						<div v-show="!loading.categories" class="filter-holder">
+							<div v-for="category in categories" class="filter">
+								<input type="checkbox" :id="'cat_'+category.id" v-model="category.selected" @change="onCategorySelected(category)" class="filter__input">
+								<label class="filter__value" :for="'cat_'+category.id">{{ category.value }}</label>
+							</div>
 						</div>
-
-						<p class="filter__type mdl-color-text--primary">Select Publisher</p>
+						<hr />
+						<p class="filter-type mdl-color-text--primary">Select Publisher</p>
 						<div v-show="loading.publishers" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-						<div v-show="!loading.publishers" v-for="publ in publishers">
-							<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="'pub_'+publ.id">
-								<input type="checkbox" :id="'pub_'+publ.id" v-model="publ.selected" @change="onPublisherSelected(publ)" class="mdl-checkbox__input">
-								<span class="mdl-checkbox__label filter__value">{{ publ.publisher }}</span>
-							</label>
+						<div v-show="!loading.publishers" class="filter-holder">
+							<div v-for="publ in publishers" class="filter">
+								<input type="checkbox" :id="'pub_'+publ.id" v-model="publ.selected" @change="onPublisherSelected(publ)" class="filter__input">
+								<label class="filter__value" :for="'pub_'+publ.id">{{ publ.publisher }}</label>
+							</div>
 						</div>
 						<button v-show="countPublishers > publishers.length" class="mdl-button mdl-js-button mdl-color-text--primary filter__show-all" @click="loadAllPublishers">SHOW ALL</button>
 					</div>
-					<div class="content mdl-cell mdl-cell--9-col">
+					<div class="content mdl-cell mdl-cell--8-col">
 						<div class="status-bar mr-lt">
 							<h6>{{ resultsDisplay }}</h6>
 							<div class="mdl-layout-spacer"></div>
@@ -158,10 +158,10 @@
 			<dialog class="mdl-dialog all-pubs-dialog" id="allPubsDialog">
 				<p class="mdl-dialog__title">All Publishers</p>
 				<div class="mdl-dialog__content all-pubs">
-						<label v-for="publ in allPublishers" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect all-pubs-col" :for="'allPub_'+publ.id">
-							<input type="checkbox" :id="'allPub_'+publ.id" v-model="publ.selected" class="mdl-checkbox__input">
-							<span class="mdl-checkbox__label filter__value">{{ publ.publisher }}</span>
-						</label>
+					<div v-for="publ in allPublishers" class="all-pubs__col">
+						<input type="checkbox" :id="'allPub_'+publ.id" v-model="publ.selected" class="filter__input">
+						<label class="filter__value" :for="'allPub_'+publ.id">{{ publ.publisher }}</label>
+					</div>
 				</div>
 				<div class="mdl-dialog__actions">
 					<button type="button" class="mdl-button mdl-color--primary mdl-color-text--white" @click="selectPublishersFromDialog">Apply Filters</button>

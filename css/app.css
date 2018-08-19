@@ -39,15 +39,21 @@ a {
 	margin: 0 !important;
 }
 
-.filter__type {
+.filter-type {
 	font-size: 1.2em;
-	margin-top: 32px;
+	margin-top: 16px;
 }
 
-.filter__value {
+.filter {
+	padding: 2px 0;
 	white-space: nowrap; 
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.filter__value {
+	cursor: pointer;
+	font-size: 1.15em;
 }
 
 .filter__show-all {
@@ -73,7 +79,7 @@ a {
 }
 
 .content {
-	margin-left: 25%;
+	margin-left: 33%;
 }
 
 .status-bar {
@@ -160,8 +166,9 @@ a {
 	height: 50%;
 	overflow-x: scroll;
 }
-.all-pubs-col {
-	max-width: 40%;
+
+.all-pubs__col {
+	width: 40%;
 }
 
 .flex-row {

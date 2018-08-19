@@ -118,8 +118,25 @@ const app = new Vue({
 		},
 
 		selectPublishersFromDialog: function() {
-			this.allPublishers.forEach(publisher => {});
+			this.allPublishers.forEach(publ => {
+				var currPubl = this.appliedFilters.getFilter(this.consts.publisher, publ.publisher);
+				var sideBarPubl = this.publishers.find(publSide => publSide.publisher === publ.publisher);
+				if (publ.selected) {
+					console.log('First', currPubl, sideBarPubl);
+					if (!currPubl && sideBarPubl) {
+						sideBarPubl.selected = true;
+						this.addPublisherFilter(sideBarPubl);
+					} else if (!currPubl) {
+						this.addPublisherFilter(publ);
+					}
+					console.log('Second', currPubl, sideBarPubl);
 
+				} else if (currPubl) {
+					this.removePublisherFilter(publ.publisher);
+				}
+			});
+
+			this.loadFeeds();
 			allPubsDialog.close();
 		},
 

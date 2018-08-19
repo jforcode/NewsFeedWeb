@@ -21,6 +21,7 @@ var Filter = function (type, key, displayValue, extra, onRemoveHandler) {
 	this.onRemoveHandler = onRemoveHandler;
 };
 
+// can remove setKeys
 var FiltersHolder = function () {
 	this.mapTypeToFilters = {};
 	this.setKeys = {};
@@ -65,7 +66,7 @@ var FiltersHolder = function () {
 	
 	this.getFilter = function (type, key) {
 		if (!this.setKeys[key] || !this.mapTypeToFilters[type]) {
-			throw errors.INVALID_TYPE_AND_KEY;
+			return null;
 		}
 
 		return this.mapTypeToFilters[type].find(item => item.key === key);
