@@ -33,7 +33,7 @@ const app = new Vue({
 			publishers: true
 		},
 		noNetwork: false,
-		
+
 		allPubsDialog: null,
 		displaySearchTerm: '',
 
@@ -183,7 +183,7 @@ const app = new Vue({
 				this.noNetwork = true;
 				return;
 			}
-			
+
 			this.categories = result.data.map(getUiCategory);
 			this.loading.categories = false;
 		},
@@ -208,7 +208,7 @@ const app = new Vue({
 			if (!pageNum) {
 				pageNum = this.currPageNum;
 			}
-			
+
 			try {
 				var result = await this.fetchFeeds(pageNum)
 			} catch (err) {
@@ -284,7 +284,7 @@ const app = new Vue({
 			return this.appliedFilters.getCountFilters() > 0;
 		},
 		resultsDisplay: function() {
-			return this.feeds.length > 0 
+			return this.feeds.length > 0
 				? "Showing " + this.feeds.length + " posts"
 				: this.loading.feeds
 					? "Loading..."
@@ -304,7 +304,7 @@ const app = new Vue({
 		}
 	},
 
-	created: function() {		
+	created: function() {
 		this.allPubsDialog = document.querySelector('#allPubsDialog');
 		this.sorter = this.sorters[2];
 
