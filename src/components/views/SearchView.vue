@@ -1,6 +1,11 @@
 <template lang="html">
   <div class="">
-    {{ message }}
+    <form @submit.prevent.default="search">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label search-box">
+        <input class="mdl-textfield__input" type="text" id="searchBox" v-model="searchTerm">
+        <label class="mdl-textfield__label" for="searchBox">Search Title or Publisher</label>
+      </div>
+    </form>
   </div>
 </template>
 

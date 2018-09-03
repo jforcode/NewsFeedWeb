@@ -1,15 +1,27 @@
 <template lang="html">
   <div id="app">
-    {{ message }}
+    <AppBarLayout />
+    <div class="">
+      <OptionsLayout />
+      <ContentLayout />
+    </div>
   </div>
 </template>
 
 <script>
+import AppBarLayout from './components/AppBarLayout.vue'
+import OptionsLayout from './components/OptionsLayout.vue'
+import ContentLayout from './components/ContentLayout.vue'
+
 export default {
   data () {
     return {
-      message: 'Something funny!'
     }
+  },
+  components: {
+    AppBarLayout,
+    OptionsLayout,
+    ContentLayout
   }
 }
 </script>
