@@ -19,6 +19,7 @@
 		"axios": "^0.18.0",
 		"material-design-lite": "^1.3.0",
 		"moment": "^2.22.2",
+		"typeface-montserrat": "0.0.54",
 		"vue": "^2.5.17"
 	}
 }
