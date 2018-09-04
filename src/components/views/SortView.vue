@@ -6,17 +6,25 @@
     </div>
     <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect sorter-menu" for="sorterHolder">
       <li class="mdl-menu__item" v-for="sorter in sorters" @click="sort(sorter)">
-        {{ sorter.sortLabel }}
+        {{ sorter.displayLabel }}
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import appState from './../../states/app.js'
+
 export default {
   data () {
     return {
-      message: 'Sort'
+      sorter: appState.sortBy,
+      sorters: appState.sorters
+    }
+  },
+  methods: {
+    sort: sorter => {
+      console.log(sorter)
     }
   }
 }

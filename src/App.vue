@@ -13,6 +13,8 @@ import AppBarLayout from './components/layout/AppBarLayout.vue'
 import OptionsLayout from './components/layout/OptionsLayout.vue'
 import ContentLayout from './components/layout/ContentLayout.vue'
 
+import appState from './states/app.js'
+
 export default {
   data () {
     return {

@@ -22,8 +22,11 @@
 export default {
   data () {
     return {
-      message: 'Feed'
+      feeds: []
     }
+  },
+  methods: {
+
   }
 }
 </script>

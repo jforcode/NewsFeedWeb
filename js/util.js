@@ -20,7 +20,7 @@ var getNumberSuffix = function (number) {
 		case 2: return "nd";
 		case 3: return "rd";
 		default: return "th";
-	} 
+	}
 };
 
 var getUrl = function (url) {

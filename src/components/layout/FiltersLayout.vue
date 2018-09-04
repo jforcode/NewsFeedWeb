@@ -28,8 +28,19 @@
 export default {
   data () {
     return {
-      message: 'Filters'
+      loading: {
+        categories: false,
+        publishers: false
+      },
+      categories: [],
+      publishers: [],
+      countPublishers: 0
     }
+  },
+  methods: {
+    onCategorySelected: () => {},
+    onPublisherSelected: () => {},
+    loadAllPublishers: () => {}
   }
 }
 </script>

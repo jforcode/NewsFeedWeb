@@ -4,6 +4,7 @@ import feedSrv from './../services/feedService.js'
 export default {
   searchBy: '',
   sortBy: null,
+  sorters: [],
   filterGroups: [],
 
   selectedFilters: [],
@@ -23,7 +24,7 @@ export default {
 
   pageNumToLoad: 0,
 
-  loadFeed: function () {
+  loadFeed: util.debounce(() => {
     feedSrv.fetchFeed({
         searchTerm: this.searchBy,
         sortBy: this.sortBy,
@@ -46,9 +47,9 @@ export default {
             logger.error(err.type + ": " + err.message)
         }
       })
-  },
+  }, 500),
 
-  loadFilters: function () {
+  loadFilters: () => {
     feedSrv.fetchFilters({
         filterLimit
       })

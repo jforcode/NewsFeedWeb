@@ -30,8 +30,16 @@ import PaginationView from './../views/PaginationView.vue'
 export default {
   data () {
     return {
-      message: 'App status'
+      resultsDisplay: '',
+      paginationVisible: false,
+      currPageNum: 0,
+      lastPageNum: 0
     }
+  },
+  computed: {
+    firstVisible: () => false,
+    lastVisible: () => false,
+
   },
   components: {
     PaginationView

@@ -26,6 +26,25 @@
 
 <script>
 export default {
+  data () {
+    return {
+      consts: {
+        category: '',
+        publisher: ''
+      },
+      displaySearchTerm: '',
+      sorter: null,
+      loading: {
+        feeds: false
+      },
+      appliedFilters: {
+        getFilters: () => []
+      }
+    }
+  },
+  methods: {
+    clearSearchTerm: () => {}
+  }
 }
 </script>
 
