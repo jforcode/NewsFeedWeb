@@ -1,5 +1,5 @@
-export default function({ sortBy, inDescOrder, displayLabel }) {
-	this.sortBy = sortBy
+export default function({ type, inDescOrder, displayLabel }) {
+	this.type = type
 	this.inDescOrder = inDescOrder
 	this.displayLabel = displayLabel
 }

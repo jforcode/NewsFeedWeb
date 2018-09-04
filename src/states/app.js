@@ -2,9 +2,10 @@ import util from './../common/js/util.js'
 import feedSrv from './../services/feedService.js'
 
 export default {
-  searchBy: '',
-  sortBy: null,
   sorters: [],
+
+  searchTerm: '',
+  sorter: null,
   filterGroups: [],
 
   selectedFilters: [],
@@ -26,8 +27,8 @@ export default {
 
   loadFeed: util.debounce(() => {
     feedSrv.fetchFeed({
-        searchTerm: this.searchBy,
-        sortBy: this.sortBy,
+        searchTerm: this.searchTerm,
+        sorter: this.sorter,
         selectedFilters: this.selectedFilters,
         pageNumToLoad: this.pageNumToLoad,
         pageSize: this.pageSize
