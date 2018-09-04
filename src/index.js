@@ -2,7 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 
 require('typeface-montserrat')
-import './common/util.css'
+import './common/css/util.css'
+import './common/css/elements.css'
+import './common/css/theme.css'
 
 new Vue({
   el: '#app',

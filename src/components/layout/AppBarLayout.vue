@@ -1,8 +1,8 @@
 <template lang="html">
-  <div class="">
-    <span class="mdl-layout-title">News Feed</span>
-    <div class="mdl-layout-spacer"></div>
-    <a href="https://www.linkedin.com/in/jeevan-mb-580905106/" class="mdl-layout-title mdl-color-text--white">
+  <div class="jb-top-app-bar">
+    <span class="jb-top-app-bar__title">News Feed</span>
+    <div class="jb-flex-spacer"></div>
+    <a href="https://www.linkedin.com/in/jeevan-mb-580905106/" class="jb-top-app-bar__link">
       <span>@jforcode</span>
     </a>
   </div>

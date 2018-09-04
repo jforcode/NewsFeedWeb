@@ -8,7 +8,7 @@
 		"url": "git://github.com/jforcode/NewsFeedWeb.git"
 	},
 	"scripts": {
-		"start": "webpack-dev-server --port 3000 --progress",
+		"start": "webpack-dev-server --port 4000 --progress",
 		"dev-watch": "webpack --watch --config config/webpack.dev.js",
 		"prod-build": "webpack --config config/webpack.prod.js",
 		"dev": "npm run dev-watch & nodemon app.js",

@@ -1,3 +1,15 @@
+.jb-flex-row {
+  display: flex;
+}
+
+.jb-flex-row--centered {
+  align-items: center;
+}
+
+.jb-flex-spacer {
+  flex-grow: 1;
+}
+
 /* start: colors */
 
 

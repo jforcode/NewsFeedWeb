@@ -27,13 +27,18 @@ export default {
 </script>
 
 <style lang="css">
-* {
-  font-family: 'Montserrat', sans-serif;
-}
-
 html, body {
   height: 100%;
 }
 
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  font-family: 'Montserrat', sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
 
 </style>

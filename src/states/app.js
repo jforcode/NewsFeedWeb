@@ -1,4 +1,4 @@
-import util from './../common/util.js'
+import util from './../common/js/util.js'
 import feedSrv from './../services/feedService.js'
 
 export default {

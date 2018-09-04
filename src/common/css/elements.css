@@ -1,0 +1,17 @@
+.jb-top-app-bar {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding-left: 48px;
+  padding-right: 32px;
+  background-color: var(--primary-color);
+  color: var(--primary-text-color-on-dark-bg);
+}
+
+.jb-top-app-bar__title {
+  font-size: 1.3em;
+}
+
+.jb-top-app-bar__link {
+  color: var(--primary-text-color-on-dark-bg);
+}
