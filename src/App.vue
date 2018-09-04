@@ -37,7 +37,7 @@ html, body {
 body {
   margin: 0;
   background-color: var(--bg-color);
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   line-height: 20px;
 }
