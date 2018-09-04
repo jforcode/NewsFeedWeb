@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import appState from './../../states/app.js'
 
 export default {
   props: [

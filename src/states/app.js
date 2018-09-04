@@ -1,9 +1,11 @@
 import util from './../common/js/util.js'
 import feedSrv from './../services/feedService.js'
 import consts from './../common/js/consts.js'
+import Sorter from './../models/Sorter.js'
+
 const logger = console
 
-export default {
+const state = {
   sorters: [],
   filterLimit: 0,
 
@@ -27,24 +29,26 @@ export default {
   },
 
   pageNumToLoad: 0,
+}
 
+const methods = {
   loadFeed: util.debounce(function () {
     feedSrv.fetchFeed({
-        searchTerm: this.searchTerm,
-        sorter: this.sorter,
-        selectedFilters: this.selectedFilters,
-        pageNumToLoad: this.pageNumToLoad,
-        pageSize: this.pageSize
+        searchTerm: state.searchTerm,
+        sorter: state.sorter,
+        selectedFilters: state.selectedFilters,
+        pageNumToLoad: state.pageNumToLoad,
+        pageSize: state.pageSize
       })
       .then(feedData => {
-        this.flags.connectivityIssue = false
-        this.countAllFeeds = feedData.countAllFeed
-  			this.feed = feedData.feed
+        state.flags.connectivityIssue = false
+        state.countAllFeeds = feedData.countAllFeed
+  			state.feed = feedData.feed
       })
       .catch(err => {
         switch (err.type) {
           case consts.errTypes.UNAVAILABLE_CONNECTION:
-            this.flags.connectivityIssue = true
+            state.flags.connectivityIssue = true
             break;
 
           default:
@@ -55,13 +59,33 @@ export default {
 
   loadFilters: function () {
     feedSrv.fetchFilters({
-        filterLimit: this.filterLimit
+        filterLimit: state.filterLimit
       })
       .then(filterGroups => {
-        this.filterGroups = filterGroups
+        state.filterGroups = filterGroups
       })
       .catch(err => {
 
       })
+  },
+
+  initSelf: function () {
+    state.sorters = [
+      new Sorter({ type: 'publishedOn', inDescOrder: true, displayLabel: 'Latest Posts First' }),
+      new Sorter({ type: 'publishedOn', inDescOrder: false, displayLabel: 'Oldest Posts First' }),
+      new Sorter({ type: 'publisher', inDescOrder: false, displayLabel: 'Publisher (A - Z)' }),
+      new Sorter({ type: 'publisher', inDescOrder: true, displayLabel: 'Publisher (Z - A)' }),
+    ]
+    state.sorter = state.sorters[0]
+
+    state.filterLimit = 5
+
+    this.loadFilters()
+    this.loadFeed()
   }
+}
+
+export {
+  state,
+  methods
 }

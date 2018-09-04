@@ -1,6 +1,8 @@
 import axios from 'axios'
+import moment from 'moment'
 
 import consts from './../common/js/consts.js'
+import util from './../common/js/util.js'
 import FilterGroup from './../models/FilterGroup.js'
 import Filter from './../models/Filter.js'
 const apiUrl = 'http://localhost:8080'
@@ -29,7 +31,7 @@ export default {
       .then(result => {
         return {
           countAllFeed: result.data.countAllFeeds,
-          feed: result.data.feeds.map(feedItem => this.getUiFeed)
+          feed: result.data.feeds.map(this.getUiFeed)
         }
       })
       .catch(err => console.log(err))

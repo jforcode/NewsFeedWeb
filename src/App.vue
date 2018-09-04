@@ -13,11 +13,12 @@ import AppBarLayout from './components/layout/AppBarLayout.vue'
 import OptionsLayout from './components/layout/OptionsLayout.vue'
 import ContentLayout from './components/layout/ContentLayout.vue'
 
-import appState from './states/app.js'
+import { state as appState, methods as appMethods } from './states/app.js'
 
 export default {
   data () {
     return {
+      appState: appState
     }
   },
   components: {
@@ -36,11 +37,14 @@ html, body {
 body {
   margin: 0;
   background-color: var(--bg-color);
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 a {
   text-decoration: none;
+  color: var(--primary-text-color-on-light-bg);
 }
 
 </style>
