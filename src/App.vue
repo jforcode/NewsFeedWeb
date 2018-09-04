@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import AppBarLayout from './components/AppBarLayout.vue'
-import OptionsLayout from './components/OptionsLayout.vue'
-import ContentLayout from './components/ContentLayout.vue'
+import AppBarLayout from './components/layout/AppBarLayout.vue'
+import OptionsLayout from './components/layout/OptionsLayout.vue'
+import ContentLayout from './components/layout/ContentLayout.vue'
 
 export default {
   data () {

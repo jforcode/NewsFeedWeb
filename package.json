@@ -2,7 +2,7 @@
 	"name": "news_feed",
 	"version": "1.0.0",
 	"description": "Displays news feed from various sources",
-	"main": "src/index.js",
+	"main": "app.js",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/jforcode/NewsFeedWeb.git"
@@ -14,6 +14,7 @@
 		"dev": "npm run dev-watch & nodemon app.js",
 		"prod": "npm run prod-build && node app.js"
 	},
+	"author": "jforcode",
 	"license": "Apache-2.0",
 	"devDependencies": {
 		"babel-core": "^6.26.3",
