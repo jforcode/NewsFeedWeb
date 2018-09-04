@@ -35,7 +35,7 @@ export default {
 }
 
 .feed-item {
-  width: 40%;
+  width: 44%;
   margin: 8px;
 }
 </style>

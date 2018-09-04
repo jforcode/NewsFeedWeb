@@ -1,9 +1,9 @@
 <template lang="html">
   <div id="app">
     <AppBarLayout />
-    <div class="">
-      <OptionsLayout />
-      <ContentLayout />
+    <div class="main-layout">
+      <OptionsLayout class="options-layout" />
+      <ContentLayout class="content-layout" />
     </div>
   </div>
 </template>
@@ -45,6 +45,22 @@ body {
 a {
   text-decoration: none;
   color: var(--primary-text-color-on-light-bg);
+}
+
+.main-layout {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+
+.options-layout {
+  flex: 1 0;
+  height: 100%;
+}
+
+.content-layout {
+  flex: 4 0;
+  height: 100%;
 }
 
 </style>

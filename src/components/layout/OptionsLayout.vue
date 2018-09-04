@@ -1,8 +1,9 @@
 <template lang="html">
-  <div class="">
+  <div class="options-layout">
     <SearchView />
-    <SortView />
-    <FilterGroupView v-for="(filterGroup, index) in appState.filterGroups"
+    <SortView class="jb-mr-tp--lg" />
+    <FilterGroupView class="jb-mr-tp--lg"
+      v-for="(filterGroup, index) in appState.filterGroups"
       :filter-group="filterGroup"
       :comp-id="'filter_grp_' + index" />
   </div>
@@ -29,5 +30,8 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+.options-layout {
+  padding: 32px;
+}
 </style>

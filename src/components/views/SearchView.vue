@@ -1,8 +1,9 @@
 <template lang="html">
   <div class="">
     <form @submit.prevent.default="search">
-      <input class="mdl-textfield__input" type="text" id="searchBox" v-model="searchTerm">
-      <label class="mdl-textfield__label" for="searchBox">Search Title or Publisher</label>
+      <label for="searchBox">Search Title or Publisher</label>
+      <br />
+      <input class="jb-mr-tp--sm" type="text" id="searchBox" v-model="searchTerm">
     </form>
   </div>
 </template>
@@ -16,6 +17,11 @@ export default {
       searchTerm: ''
     }
   },
+  methods: {
+    search: function () {
+
+    }
+  }
 }
 </script>
 
