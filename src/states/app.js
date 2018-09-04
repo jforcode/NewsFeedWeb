@@ -2,6 +2,7 @@ import util from './../common/js/util.js'
 import feedSrv from './../services/feedService.js'
 import consts from './../common/js/consts.js'
 import Sorter from './../models/Sorter.js'
+import SelectedFilter from './../models/SelectedFilter.js'
 
 const logger = console
 
@@ -32,6 +33,25 @@ const state = {
 }
 
 const methods = {
+  selectFilter: function (filterGroup, filter) {
+    console.log(filterGroup, filter)
+    if (filter.selected) {
+      state.selectedFilters.push(new SelectedFilter({
+          type: filterGroup.filterType,
+          value: filter.value,
+          label: filter.label
+        }))
+    } else {
+      let ind = state.selectedFilters.findIndex(
+        selectedFilter => selectedFilter.type === filterGroup.filterType
+          && selectedFilter.value === filter.value
+      )
+      if (ind !== -1) {
+        state.selectedFilters.splice(ind, 1)
+      }
+    }
+  },
+
   loadFeed: util.debounce(function () {
     feedSrv.fetchFeed({
         searchTerm: state.searchTerm,

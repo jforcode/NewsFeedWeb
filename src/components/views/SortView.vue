@@ -2,7 +2,7 @@
   <div class="sorter-holder">
     <label class="mdl-textfield__label" for="sorterHolder">Sort by</label>
     <br />
-    <select class="jb-mr-tp--sm" v-model="appState.sorter" id="sorterHolder">
+    <select class="jb-mr-tp--sm" v-model="appState.sorter" id="sorterHolder" @change="onSorterChange">
       <option :value="refSorter" v-for="refSorter in appState.sorters">
         {{ refSorter.displayLabel }}
       </option>
@@ -20,7 +20,8 @@ export default {
     }
   },
   methods: {
-    sort: sorter => {
+    onSorterChange: function () {
+      appMethods.loadFeed()
     }
   },
 }

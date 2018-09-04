@@ -9,13 +9,14 @@ const apiUrl = 'http://localhost:8080'
 
 export default {
   fetchFeed: function ({ searchTerm, sorter, selectedFilters, pageNumToLoad, pageSize }) {
+    console.log(selectedFilters)
     let categoryIds = selectedFilters.filter(selectedFilter => selectedFilter.type === consts.category)
         .map(categoryFilter => categoryFilter.value),
       publishers = selectedFilters.filter(selectedFilter => selectedFilter.type === consts.publisher)
         .map(publisherFilter => publisherFilter.value)
 
     let params = {
-      srch: this.searchTerm,
+      srch: searchTerm,
       sort: {
         sortBy: sorter.type,
         descOrder: sorter.inDescOrder

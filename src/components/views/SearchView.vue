@@ -3,23 +3,24 @@
     <form @submit.prevent.default="search">
       <label for="searchBox">Search Title or Publisher</label>
       <br />
-      <input class="jb-mr-tp--sm" type="text" id="searchBox" v-model="searchTerm">
+      <input class="jb-mr-tp--sm" type="text" id="searchBox"
+        v-model="appState.searchTerm">
     </form>
   </div>
 </template>
 
 <script>
-import appState from './../../states/app.js'
+import { state as appState, methods as appMethods } from './../../states/app.js'
 
 export default {
   data () {
     return {
-      searchTerm: ''
+      appState: appState
     }
   },
   methods: {
     search: function () {
-
+      appMethods.loadFeed()
     }
   }
 }
