@@ -9,7 +9,6 @@ const apiUrl = 'http://localhost:8080'
 
 export default {
   fetchFeed: function ({ searchTerm, sorter, selectedFilters, pageNumToLoad, pageSize }) {
-    console.log(selectedFilters)
     let categoryIds = selectedFilters.filter(selectedFilter => selectedFilter.type === consts.category)
         .map(categoryFilter => categoryFilter.value),
       publishers = selectedFilters.filter(selectedFilter => selectedFilter.type === consts.publisher)

@@ -34,7 +34,6 @@ const state = {
 
 const methods = {
   selectFilter: function (filterGroup, filter) {
-    console.log(filterGroup, filter)
     if (filter.selected) {
       state.selectedFilters.push(new SelectedFilter({
           type: filterGroup.filterType,
@@ -42,13 +41,36 @@ const methods = {
           label: filter.label
         }))
     } else {
-      let ind = state.selectedFilters.findIndex(
-        selectedFilter => selectedFilter.type === filterGroup.filterType
-          && selectedFilter.value === filter.value
-      )
-      if (ind !== -1) {
-        state.selectedFilters.splice(ind, 1)
-      }
+      this.removeSelectedFilter({
+        type: filterGroup.filterType,
+        value: filter.value
+      })
+    }
+  },
+
+  removeSelectedFilter: function ({ type, value }) {
+    let ind = state.selectedFilters.findIndex(
+      selectedFilter => selectedFilter.type === type
+        && selectedFilter.value === value
+    )
+    if (ind === -1) return
+    state.selectedFilters.splice(ind, 1)
+  },
+
+  findFilter: function ({ type, value }) {
+    let filterGroup = state.filterGroups.find(filterGroup => filterGroup.filterType === type)
+    if (!filterGroup) return
+
+    let filter = filterGroup.filters.find(filter => filter.value === value)
+    if (!filter) return
+
+    return filter
+  },
+
+  removeFilter: function ({ type, value }) {
+    let filter = this.findFilter({ type, value })
+    if (filter) {
+      filter.selected = false
     }
   },
 

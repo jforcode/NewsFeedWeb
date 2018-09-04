@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="">
+    <SelectedFiltersView />
     <div class="status-bar mr-lt">
       <h6>{{ resultsDisplay }}</h6>
       <div class="mdl-layout-spacer"></div>
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+import SelectedFiltersView from './../views/SelectedFiltersView.vue'
 import PaginationView from './../views/PaginationView.vue'
 
 export default {
@@ -42,6 +44,7 @@ export default {
 
   },
   components: {
+    SelectedFiltersView,
     PaginationView
   }
 }
