@@ -1,10 +1,12 @@
+import axios from 'axios'
+
 import consts from './../common/js/consts.js'
 import FilterGroup from './../models/FilterGroup.js'
 import Filter from './../models/Filter.js'
-const apiUrl = process.env.apiUrl
+const apiUrl = 'http://localhost:8080'
 
 export default {
-  fetchFeeds: function ({ searchTerm, sorter, selectedFilters, pageNumToLoad, pageSize }) {
+  fetchFeed: function ({ searchTerm, sorter, selectedFilters, pageNumToLoad, pageSize }) {
     let categoryIds = selectedFilters.filter(selectedFilter => selectedFilter.type === consts.category)
         .map(categoryFilter => categoryFilter.value),
       publishers = selectedFilters.filter(selectedFilter => selectedFilter.type === consts.publisher)
@@ -14,16 +16,23 @@ export default {
       srch: this.searchTerm,
       sort: {
         sortBy: sorter.type,
-        descOrder: this.sorter.inDescOrder
+        descOrder: sorter.inDescOrder
       },
       filter: {
         categoryIds,
         publishers
       },
-      page,
+      page: pageNumToLoad,
     }
 
     return axios.post(apiUrl + '/feed', params)
+      .then(result => {
+        return {
+          countAllFeed: result.data.countAllFeeds,
+          feed: result.data.feeds.map(feedItem => this.getUiFeed)
+        }
+      })
+      .catch(err => console.log(err))
   },
 
   fetchFilters: async function ({ filterLimit }) {
@@ -51,6 +60,7 @@ export default {
           new FilterGroup({ filterType: consts.publisher, filters: publisherFilters, totalCount: values[1].data.countAllPublishers })
         ]
       })
+      .catch(err => console.log(err))
   },
 
   getUiFeed: function (apiFeed) {

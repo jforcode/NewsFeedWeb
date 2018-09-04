@@ -1,4 +1,7 @@
 export default {
   category: 'Category',
-  publisher: 'Publishser'
+  publisher: 'Publishser',
+  errTypes: {
+    UNAVAILABLE_CONNECTION: 0
+  }
 }

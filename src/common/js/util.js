@@ -1,7 +1,7 @@
 export default {
-  debounce: (func, wait, immediate) => {
+  debounce: function (func, wait, immediate) {
   	let timeout = null
-  	return () => {
+  	return function () {
   		let context = this,
         args = arguments,
         later = function() {

@@ -1,8 +1,11 @@
 import util from './../common/js/util.js'
 import feedSrv from './../services/feedService.js'
+import consts from './../common/js/consts.js'
+const logger = console
 
 export default {
   sorters: [],
+  filterLimit: 0,
 
   searchTerm: '',
   sorter: null,
@@ -25,7 +28,7 @@ export default {
 
   pageNumToLoad: 0,
 
-  loadFeed: util.debounce(() => {
+  loadFeed: util.debounce(function () {
     feedSrv.fetchFeed({
         searchTerm: this.searchTerm,
         sorter: this.sorter,
@@ -33,10 +36,10 @@ export default {
         pageNumToLoad: this.pageNumToLoad,
         pageSize: this.pageSize
       })
-      .then(result => {
+      .then(feedData => {
         this.flags.connectivityIssue = false
-        this.countAllFeeds = result.data.countAllFeeds
-  			this.feed = result.data.feeds.map(feedsSrv.getUiFeed)
+        this.countAllFeeds = feedData.countAllFeed
+  			this.feed = feedData.feed
       })
       .catch(err => {
         switch (err.type) {
@@ -50,12 +53,12 @@ export default {
       })
   }, 500),
 
-  loadFilters: () => {
+  loadFilters: function () {
     feedSrv.fetchFilters({
-        filterLimit
+        filterLimit: this.filterLimit
       })
-      .then(result => {
-
+      .then(filterGroups => {
+        this.filterGroups = filterGroups
       })
       .catch(err => {
 
