@@ -74,9 +74,11 @@ const methods = {
     }
   },
 
-  loadAllFilters: async function ({ filterLimit, filterType }) {
+  getAllFilters: async function ({ filterLimit, filterType }) {
     try {
-      return await feedSrv.fetchFilters({ filterLimit, filterType })
+      let filterGroupArr = await feedSrv.fetchFilters({ filterLimit, filterType })
+      return filterGroupArr[0]
+      
     } catch (err) {
       console.log('All filters error', err)
     }

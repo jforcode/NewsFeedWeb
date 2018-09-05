@@ -47,6 +47,14 @@ a {
   color: var(--primary-text-color-on-light-bg);
 }
 
+#app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
 .main-layout {
   display: flex;
   align-items: stretch;
@@ -55,12 +63,12 @@ a {
 
 .options-layout {
   flex: 1 0;
-  height: 100%;
+  overflow: auto;
 }
 
 .content-layout {
   flex: 4 0;
-  height: 100%;
+  overflow: auto;
 }
 
 </style>

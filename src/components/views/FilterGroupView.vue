@@ -13,10 +13,12 @@
     <button v-if="filterGroup.moreAvailable" class="filter-group__show-all" @click="loadAllFilters">
       SHOW ALL
     </button>
+    <AllFiltersLayout v-if="showAllFilters" :filter-group="allFilterGroup" :comp-id="'allPubs'" />
   </div>
 </template>
 
 <script>
+import AllFiltersLayout from './../layout/AllFiltersLayout.vue'
 import { state as appState, methods as appMethods } from './../../states/app.js'
 
 export default {
@@ -24,16 +26,34 @@ export default {
     'compId',
     'filterGroup'
   ],
+  data () {
+    return {
+      showAllFilters: false,
+      allFilterGroup: {}
+    }
+  },
   methods: {
     onFilterSelected: function (filterGroup, filter) {
       appMethods.selectFilter(filterGroup, filter)
       appMethods.loadPage(1)
     },
-    loadAllFilters: function () {
-      appMethods.loadAllFilters({
+    loadAllFilters: async function () {
+      let allFilters = await appMethods.getAllFilters({
         filterType: this.filterGroup.filterType
       })
+
+      if (allFilters) {
+        this.showAllFilters = true
+        this.allFilterGroup = allFilters
+      }
+    },
+    onAllFilterClose: function () {
+      this.showAllFilters = false
+      this.allFilterGroup = {}
     }
+  },
+  components: {
+    AllFiltersLayout
   }
 }
 </script>

@@ -1,25 +1,42 @@
 <template lang="html">
-  <dialog class="mdl-dialog all-pubs-dialog" id="allPubsDialog">
-    <div class="all-pubs__title-holder">
-      <p class="mdl-dialog__title all-pubs__title">All Publishers ({{ allPublishers.length }})</p>
-      <div class="mdl-layout-spacer"></div>
-      <span>{{ numSelectedAllPublishers }} selected</span>
-    </div>
-    <div class="mdl-dialog__content all-pubs">
-      <div v-for="publ in allPublishers" class="all-pubs__col">
-        <input type="checkbox" :id="'allPub_'+publ.id" v-model="publ.selected" class="filter__input" @change="onAllPublisherSelected(publ)">
-        <label class="filter__value" :for="'allPub_'+publ.id">{{ publ.publisher }}</label>
+  <div class="all-filters-layout">
+    <div class="top-status-bar jb-shadow--2dp">
+      <p class="status__title">Showing {{ filterGroup.filters.length }} of type {{ filterGroup.filterType }}</p>
+      <div class="jb-flex-spacer"></div>
+      <div class="status__icon">
+        <i class="material-icons">check</i>
+      </div>
+      <div class="status__icon">
+        <i class="material-icons">clear</i>
       </div>
     </div>
-    <div class="mdl-dialog__actions">
-      <button type="button" class="mdl-button mdl-color--primary mdl-color-text--white" @click="selectPublishersFromDialog">Apply Filters</button>
-      <button type="button" class="mdl-button" @click="closeAllPubsDialog">Cancel</button>
+
+    <div class="all-filters">
+      <div class="filter-group__filters">
+        <div v-for="(filter, index) in filterGroup.filters" class="filter">
+          <label class="filter__value" :for="compId + '_filter_' + index">
+            <input type="checkbox" class="filter__input" v-model="filter.selected"
+              :id="compId + '_filter_' + index" @change="onFilterSelected(filterGroup, filter)">
+            <span>{{ filter.label }}</span>
+          </label>
+        </div>
+      </div>
+      <button v-if="filterGroup.moreAvailable" class="filter-group__show-all" @click="loadAllFilters">
+        SHOW ALL
+      </button>
     </div>
-  </dialog>
+  </div>
+
+</div>
+
 </template>
 
 <script>
 export default {
+  props: [
+    'filterGroup',
+    'compId'
+  ],
   data () {
     return {
       message: 'All filters'
@@ -28,5 +45,35 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+.all-filters-layout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #FAFAFA;
+  overflow: scroll;
+}
+
+.top-status-bar {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.status__title {
+  font-size: 1.4em;
+}
+
+.status__icon {
+  padding: 16px;
+  cursor: pointer;
+}
+
+.all-filters {
+  padding: 32px;
+}
 </style>

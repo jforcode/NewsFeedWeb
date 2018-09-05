@@ -32,6 +32,6 @@ export default {
 
 <style lang="css" scoped>
 .options-layout {
-  padding: 32px;
+  padding: 32px 16px 108px 32px;
 }
 </style>

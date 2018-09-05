@@ -37,6 +37,5 @@ export default {
 
 <style lang="css">
 .status-bar {
-  padding: 32px 16px 16px 16px;
 }
 </style>
