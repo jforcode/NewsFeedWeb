@@ -30,7 +30,9 @@ export default {
       appMethods.loadPage(1)
     },
     loadAllFilters: function () {
-
+      appMethods.loadAllFilters({
+        filterType: this.filterGroup.filterType
+      })
     }
   }
 }

@@ -31,46 +31,70 @@ export default {
       .then(result => {
         return {
           countAllFeed: result.data.countAllFeeds,
-          feed: result.data.feeds.map(this.getUiFeed)
+          feed: result.data.feeds.map(getUiFeed)
         }
       })
       .catch(err => console.log(err))
   },
 
-  fetchFilters: async function ({ filterLimit }) {
-    const params = filterLimit ? { params: { limit: filterLimit } } : undefined
+  fetchFilters: function ({ filterLimit, filterType }) {
+    let promises = []
+    if (!filterType || filterType === consts.category) {
+      promises.push(fetchCategories())
+    }
+    if (!filterType || filterType === consts.publisher) {
+      promises.push(fetchPublishers(filterLimit))
+    }
 
-    return Promise.all([
-        axios.get(apiUrl + '/categories'),
-        axios.get(apiUrl + '/publishers', params)
-      ])
-      .then(values => {
-        let categoryFilters = values[0].data.map(category => new Filter({
-              value: category.id,
-              label: category.value,
-              selected: false
-            }))
+    return Promise.all(promises)
+  },
+}
 
-        let publisherFilters = values[1].data.publishers.map(publisher => new Filter({
-              value: publisher.publisher,
-              label: publisher.publisher,
-              selected: false
-            }))
+function fetchCategories () {
+  return axios.get(apiUrl + '/categories')
+    .then(result => {
+      let categoryFilters = result.data.map(category => new Filter({
+            value: category.id,
+            label: category.value,
+            selected: false
+          }))
 
-        return [
-          new FilterGroup({ filterType: consts.category, filters: categoryFilters, totalCount: categoryFilters.length }),
-          new FilterGroup({ filterType: consts.publisher, filters: publisherFilters, totalCount: values[1].data.countAllPublishers })
-        ]
+      return new FilterGroup({
+        filterType: consts.category,
+        filters: categoryFilters,
+        totalCount: categoryFilters.length
       })
-      .catch(err => console.log(err))
-  },
+    })
+    .catch(err => {
+      throw err
+    })
+}
 
-  getUiFeed: function (apiFeed) {
-  	let uiFeed = apiFeed
-  	uiFeed.publisherUrl = util.getUrl(apiFeed.publisherUrl)
-  	uiFeed.url = util.getUrl(apiFeed.url)
-  	uiFeed.publishedOnStr = moment(apiFeed.publishedOn).fromNow()
-  	return uiFeed
-  },
+function fetchPublishers (filterLimit) {
+  const params = filterLimit ? { params: { limit: filterLimit } } : undefined
+  return axios.get(apiUrl + '/publishers', params)
+    .then(result => {
+      let publisherFilters = result.data.publishers.map(publisher => new Filter({
+            value: publisher.publisher,
+            label: publisher.publisher,
+            selected: false
+          }))
 
+      return new FilterGroup({
+        filterType: consts.publisher,
+        filters: publisherFilters,
+        totalCount: result.data.countAllPublishers
+      })
+    })
+    .catch(err => {
+      throw err
+    })
+}
+
+function getUiFeed (apiFeed) {
+	let uiFeed = apiFeed
+	uiFeed.publisherUrl = util.getUrl(apiFeed.publisherUrl)
+	uiFeed.url = util.getUrl(apiFeed.url)
+	uiFeed.publishedOnStr = moment(apiFeed.publishedOn).fromNow()
+	return uiFeed
 }

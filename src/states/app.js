@@ -74,6 +74,14 @@ const methods = {
     }
   },
 
+  loadAllFilters: async function ({ filterLimit, filterType }) {
+    try {
+      return await feedSrv.fetchFilters({ filterLimit, filterType })
+    } catch (err) {
+      console.log('All filters error', err)
+    }
+  },
+
   loadPage: function (pageNum) {
     state.pageNumToLoad = pageNum
     this.loadFeed()
@@ -119,7 +127,7 @@ const methods = {
         state.flags.loadFilters = false
       })
       .catch(err => {
-
+        console.log(err)
       })
   },
 
