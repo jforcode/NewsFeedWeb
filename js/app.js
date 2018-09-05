@@ -50,7 +50,7 @@ const app = new Vue({
 		currPageNum: 0,
 		lastPageNum: 0,
 
-		countAllFeeds: 0,
+		countAllFeed: 0,
 		feedPageSize: 0,
 		feeds: [],
 
@@ -217,12 +217,12 @@ const app = new Vue({
 			}
 
 			this.noNetwork = false;
-			this.countAllFeeds = result.data.countAllFeeds;
+			this.countAllFeed = result.data.countAllFeed;
 			this.feedPageSize = result.data.pageSize;
 			this.feeds = result.data.feeds.map(getUiFeed);
 
 			this.currPageNum = pageNum;
-			this.lastPageNum = Math.ceil(this.countAllFeeds / this.feedPageSize);
+			this.lastPageNum = Math.ceil(this.countAllFeed / this.feedPageSize);
 
 			this.displaySearchTerm = this.searchTerm;
 			this.loading.feeds = false;

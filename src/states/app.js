@@ -21,7 +21,7 @@ const state = {
   lastPageNum: 0,
 
   feed: [],
-  countAllFeeds: 0,
+  countAllFeed: 0,
 
   flags: {
     loadingFeeds: false,
@@ -74,7 +74,13 @@ const methods = {
     }
   },
 
+  loadPage: function (pageNum) {
+    state.pageNumToLoad = pageNum
+    this.loadFeed()
+  },
+
   loadFeed: util.debounce(function () {
+    state.flags.loadingFeeds = true
     feedSrv.fetchFeed({
         searchTerm: state.searchTerm,
         sorter: state.sorter,
@@ -83,9 +89,13 @@ const methods = {
         pageSize: state.pageSize
       })
       .then(feedData => {
-        state.flags.connectivityIssue = false
-        state.countAllFeeds = feedData.countAllFeed
+        state.countAllFeed = feedData.countAllFeed
   			state.feed = feedData.feed
+
+        state.flags.loadingFeeds = false
+        state.flags.connectivityIssue = false
+        state.currPageNum = state.pageNumToLoad
+        state.lastPageNum = state.countAllFeed / state.pageSize
       })
       .catch(err => {
         switch (err.type) {
@@ -100,11 +110,13 @@ const methods = {
   }, 500),
 
   loadFilters: function () {
+    state.flags.loadingFilters = true
     feedSrv.fetchFilters({
         filterLimit: state.filterLimit
       })
       .then(filterGroups => {
         state.filterGroups = filterGroups
+        state.flags.loadFilters = false
       })
       .catch(err => {
 
@@ -121,6 +133,8 @@ const methods = {
     state.sorter = state.sorters[0]
 
     state.filterLimit = 5
+    state.pageSize = 20
+    state.pageNumToLoad = 1
 
     this.loadFilters()
     this.loadFeed()

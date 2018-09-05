@@ -131,4 +131,24 @@
   padding: 16px;
 }
 
+.jb-pd--xsm {
+  padding: 4px;
+}
+
+.jb-pd--sm {
+  padding: 8px;
+}
+
+.jb-pd {
+  padding: 16px;
+}
+
+.jb-pd--md {
+  padding: 24px;
+}
+
+.jb-pd--lg {
+  padding: 32px;
+}
+
 /* end: padding util */

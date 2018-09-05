@@ -1,47 +1,32 @@
 <template lang="html">
-  <div class="">
-    <SelectedFiltersView />
-    <div class="status-bar mr-lt">
-      <h6>{{ resultsDisplay }}</h6>
-      <div class="mdl-layout-spacer"></div>
-      <div v-show="paginationVisible" class="flex-row">
-        <button :disabled="!firstVisible" class="mdl-button mdl-js-button mdl-button--icon mdl-button--primary page-control" @click="loadPage(1)">
-          <i class="material-icons">first_page</i>
-        </button>
-        <button :disabled="!firstVisible" class="mdl-button mdl-js-button mdl-button--icon mdl-button--primary page-control" @click="loadPage(currPageNum - 1)">
-          <i class="material-icons">chevron_left</i>
-        </button>
-        <p class="page-control mdl-color-text--primary">Page {{ currPageNum }} of {{ lastPageNum }}</p>
-        <button :disabled="!lastVisible" class="mdl-button mdl-js-button mdl-button--icon mdl-button--primary page-control" @click="
-        loadPage(currPageNum + 1)">
-          <i class="material-icons">chevron_right</i>
-        </button>
-        <button :disabled="!lastVisible" class="mdl-button mdl-js-button mdl-button--icon mdl-button--primary page-control" @click="loadPage(lastPageNum)">
-          <i class="material-icons">last_page</i>
-        </button>
-      </div>
+  <div class="status-bar">
+    <div class="jb-flex-row">
+      <span>{{ statusDisplay }}</span>
+      <div class="jb-flex-spacer"></div>
+      <PaginationView />
     </div>
-    <PaginationView />
+    <SelectedFiltersView />
   </div>
 </template>
 
 <script>
+import { state as appState, methods as appMethods } from './../../states/app.js'
+
 import SelectedFiltersView from './../views/SelectedFiltersView.vue'
 import PaginationView from './../views/PaginationView.vue'
 
 export default {
   data () {
     return {
-      resultsDisplay: '',
-      paginationVisible: false,
-      currPageNum: 0,
-      lastPageNum: 0
+      appState: appState
     }
   },
   computed: {
-    firstVisible: () => false,
-    lastVisible: () => false,
-
+    statusDisplay: function () {
+      return this.appState.feed.length
+        ? "Showing " + this.appState.feed.length + " results"
+        : ""
+    }
   },
   components: {
     SelectedFiltersView,
@@ -51,4 +36,7 @@ export default {
 </script>
 
 <style lang="css">
+.status-bar {
+  padding: 32px 16px 16px 16px;
+}
 </style>

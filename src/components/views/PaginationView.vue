@@ -1,49 +1,42 @@
 <template lang="html">
-  <div class="applied-filters">
-    <span v-if="displaySearchTerm" class="applied-filter mdl-chip mdl-chip--deletable">
-      <span class="mdl-chip__text">{{ displaySearchTerm }}</span>
-      <button type="button" class="mdl-chip__action" @click="clearSearchTerm">
-        <i class="material-icons">cancel</i>
-      </button>
-    </span>
-    <span v-if="sorter && !loading.feeds" class="applied-filter mdl-chip">
-      <span class="mdl-chip__text">{{ sorter ? sorter.sortLabel : "" }}</span>
-    </span>
-    <span class="applied-filter mdl-chip mdl-chip--deletable" v-for="catFilter in appliedFilters.getFilters(consts.category)">
-      <span class="mdl-chip__text">{{ catFilter.displayValue }}</span>
-      <button type="button" class="mdl-chip__action" @click="removeCategoryFilter(catFilter.key)">
-        <i class="material-icons">cancel</i>
-      </button>
-    </span>
-    <span class="applied-filter mdl-chip mdl-chip--deletable" v-for="publFilter in appliedFilters.getFilters(consts.publisher)">
-      <span class="mdl-chip__text">{{ publFilter.displayValue }}</span>
-      <button type="button" class="mdl-chip__action" @click="removePublisherFilter(publFilter.key)">
-        <i class="material-icons">cancel</i>
-      </button>
-    </span>
+  <div class="jb-flex-row">
+    <button :disabled="!firstVisible" class="page-control" @click="loadPage(1)">
+      <i class="material-icons">first_page</i>
+    </button>
+    <button :disabled="!firstVisible" class="page-control" @click="loadPage(appState.currPageNum - 1)">
+      <i class="material-icons">chevron_left</i>
+    </button>
+    <p class="page-control">Page {{ appState.currPageNum }} of {{ appState.lastPageNum }}</p>
+    <button :disabled="!lastVisible" class="page-control" @click="loadPage(appState.currPageNum + 1)">
+      <i class="material-icons">chevron_right</i>
+    </button>
+    <button :disabled="!lastVisible" class="page-control" @click="loadPage(appState.lastPageNum)">
+      <i class="material-icons">last_page</i>
+    </button>
   </div>
 </template>
 
 <script>
+import { state as appState, methods as appMethods } from './../../states/app.js'
+
 export default {
   data () {
     return {
-      consts: {
-        category: '',
-        publisher: ''
-      },
-      displaySearchTerm: '',
-      sorter: null,
-      loading: {
-        feeds: false
-      },
-      appliedFilters: {
-        getFilters: () => []
-      }
+      appState: appState,
     }
   },
   methods: {
-    clearSearchTerm: () => {}
+    loadPage: function (pageNum) {
+      appMethods.loadPage(pageNum)
+    }
+  },
+  computed: {
+    firstVisible: function () {
+      return this.appState.currPageNum > 1
+    },
+    lastVisible: function () {
+      return this.appState.currPageNum < this.appState.lastPageNum
+    }
   }
 }
 </script>
