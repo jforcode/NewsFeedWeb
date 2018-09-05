@@ -33,6 +33,7 @@ const state = {
 }
 
 const methods = {
+  // TODO: change name
   selectFilter: function (filterGroup, filter) {
     if (filter.selected) {
       state.selectedFilters.push(new SelectedFilter({
@@ -74,11 +75,17 @@ const methods = {
     }
   },
 
+  findSelectedFilter: function ({ type, value }) {
+    return state.selectedFilters.find(
+      selectedFilter => selectedFilter.type === type && selectedFilter.value === value
+    )
+  },
+
   getAllFilters: async function ({ filterLimit, filterType }) {
     try {
       let filterGroupArr = await feedSrv.fetchFilters({ filterLimit, filterType })
       return filterGroupArr[0]
-      
+
     } catch (err) {
       console.log('All filters error', err)
     }

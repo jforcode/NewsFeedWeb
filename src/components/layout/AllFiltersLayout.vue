@@ -3,15 +3,17 @@
     <div class="top-status-bar jb-shadow--2dp">
       <p class="status__title">Showing {{ filterGroup.filters.length }} of type {{ filterGroup.filterType }}</p>
       <div class="jb-flex-spacer"></div>
-      <div class="status__icon">
+      <span class="jb-mr-rt">{{ selectedFilters.length }} selected</span>
+      <div class="status__icon" @click="$emit('onAllFilterConfirm', selectedFilters)">
         <i class="material-icons">check</i>
       </div>
-      <div class="status__icon">
+      <div class="status__icon" @click="$emit('onAllFilterClose')">
         <i class="material-icons">clear</i>
       </div>
     </div>
 
     <div class="all-filters">
+      {{ selectedFilters }}
       <div class="filter-group__filters">
         <div v-for="(filter, index) in filterGroup.filters" class="filter">
           <label class="filter__value" :for="compId + '_filter_' + index">
@@ -21,9 +23,6 @@
           </label>
         </div>
       </div>
-      <button v-if="filterGroup.moreAvailable" class="filter-group__show-all" @click="loadAllFilters">
-        SHOW ALL
-      </button>
     </div>
   </div>
 
@@ -32,6 +31,8 @@
 </template>
 
 <script>
+import { state as appState, methods as appMethods } from './../../states/app.js'
+
 export default {
   props: [
     'filterGroup',
@@ -39,8 +40,28 @@ export default {
   ],
   data () {
     return {
-      message: 'All filters'
+      appState: appState,
+      selectedFilters: []
     }
+  },
+  methods: {
+    onFilterSelected: function (filterGroup, filter) {
+      if (filter.selected) {
+        this.selectedFilters.push(filter)
+      } else {
+        let filterInd = this.selectedFilters.findIndex(selectedFilter => selectedFilter.value === filter.value)
+        this.selectedFilters.splice(filterInd, 1)
+      }
+    }
+  },
+  created () {
+    let filterType = this.filterGroup.filterType
+    this.filterGroup.filters.forEach(filter => {
+      if (appMethods.findSelectedFilter({ type: filterType, value: filter.value })) {
+        filter.selected = true
+        this.selectedFilters.push(filter)
+      }
+    })
   }
 }
 </script>
@@ -75,5 +96,6 @@ export default {
 
 .all-filters {
   padding: 32px;
+
 }
 </style>

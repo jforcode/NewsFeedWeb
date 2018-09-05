@@ -5,7 +5,7 @@
       <div v-for="(filter, index) in filterGroup.filters" class="filter">
         <label class="filter__value" :for="compId + '_filter_' + index">
           <input type="checkbox" class="filter__input" v-model="filter.selected"
-            :id="compId + '_filter_' + index" @change="onFilterSelected(filterGroup, filter)">
+            :id="compId + '_filter_' + index" @change="onFilterSelected(filter)">
           <span>{{ filter.label }}</span>
         </label>
       </div>
@@ -13,7 +13,11 @@
     <button v-if="filterGroup.moreAvailable" class="filter-group__show-all" @click="loadAllFilters">
       SHOW ALL
     </button>
-    <AllFiltersLayout v-if="showAllFilters" :filter-group="allFilterGroup" :comp-id="'allPubs'" />
+    <AllFiltersLayout v-if="showAllFilters"
+      :filter-group="allFilterGroup"
+      :comp-id="'allPubs'"
+      @onAllFilterClose="onAllFilterClose"
+      @onAllFilterConfirm="onAllFilterConfirm" />
   </div>
 </template>
 
@@ -33,8 +37,8 @@ export default {
     }
   },
   methods: {
-    onFilterSelected: function (filterGroup, filter) {
-      appMethods.selectFilter(filterGroup, filter)
+    onFilterSelected: function (filter) {
+      appMethods.selectFilter(this.filterGroup, filter)
       appMethods.loadPage(1)
     },
     loadAllFilters: async function () {
@@ -50,6 +54,16 @@ export default {
     onAllFilterClose: function () {
       this.showAllFilters = false
       this.allFilterGroup = {}
+    },
+    onAllFilterConfirm: function (selectedFilters) {
+      this.showAllFilters = false
+      this.allFilterGroup = {}
+      selectedFilters.forEach(selectedFilter => {
+        appMethods.selectFilter(this.filterGroup, selectedFilter)
+        var thisFilter = this.filterGroup.filters.find(filter => filter.value === selectedFilter.value)
+        thisFilter.selected = true
+      })
+      appMethods.loadPage(1)
     }
   },
   components: {
