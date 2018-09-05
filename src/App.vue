@@ -59,6 +59,7 @@ a {
   display: flex;
   align-items: stretch;
   height: 100%;
+  margin-top: 2px;
 }
 
 .options-layout {

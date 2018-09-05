@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="jb-top-app-bar">
+  <div class="jb-top-app-bar jb-shadow--2dp">
     <span class="jb-top-app-bar__title">News Feed</span>
     <div class="jb-flex-spacer"></div>
     <a href="https://www.linkedin.com/in/jeevan-mb-580905106/" class="jb-top-app-bar__link">
