@@ -27,7 +27,7 @@ export default {
   methods: {
     onFilterSelected: function (filterGroup, filter) {
       appMethods.selectFilter(filterGroup, filter)
-      appMethods.loadFeed()
+      appMethods.loadPage(1)
     },
     loadAllFilters: function () {
 

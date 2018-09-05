@@ -29,7 +29,7 @@ export default {
     removeSelectedFilter: function (selectedFilter) {
       appMethods.removeSelectedFilter({ type: selectedFilter.type, value: selectedFilter.value })
       appMethods.removeFilter({ type: selectedFilter.type, value: selectedFilter.value })
-      appMethods.loadFeed()
+      appMethods.loadPage(1)
     }
   }
 }

@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     search: function () {
-      appMethods.loadFeed()
+      appMethods.loadPage(1)
     }
   }
 }

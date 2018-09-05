@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     onSorterChange: function () {
-      appMethods.loadFeed()
+      appMethods.loadPage(1)
     }
   },
 }

@@ -24,8 +24,8 @@ export default {
   computed: {
     statusDisplay: function () {
       return this.appState.feed.length
-        ? "Showing " + this.appState.feed.length + " results"
-        : ""
+        ? 'Showing ' + this.appState.feed.length + ' of ' + this.appState.countAllFeed + ' results'
+        : ''
     }
   },
   components: {

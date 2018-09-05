@@ -95,7 +95,7 @@ const methods = {
         state.flags.loadingFeeds = false
         state.flags.connectivityIssue = false
         state.currPageNum = state.pageNumToLoad
-        state.lastPageNum = state.countAllFeed / state.pageSize
+        state.lastPageNum = Math.ceil(state.countAllFeed / state.pageSize)
       })
       .catch(err => {
         switch (err.type) {
