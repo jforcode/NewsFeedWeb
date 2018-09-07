@@ -6,7 +6,7 @@
     <span v-if="appState.sorter" class="applied-filter jb-chip">
       <span class="jb-chip__text">{{ appState.sorter ? appState.sorter.displayLabel : "" }}</span>
     </span>
-    <span class="applied-filter jb-chip"
+    <span class="selected-filter jb-chip"
       v-for="selectedFilter in appState.selectedFilters">
       <span class="jb-chip__text">{{ selectedFilter.label }}</span>
       <i class="material-icons delete-filter-icon" @click="removeSelectedFilter(selectedFilter)">cancel</i>
@@ -40,8 +40,9 @@ export default {
 
 .selected-filter {
   margin-left: 8px;
+  margin-top: 8px;
 }
-.applied-filter:first-child {
+.selected-filter:first-child {
   margin-left: 0;
 }
 </style>
