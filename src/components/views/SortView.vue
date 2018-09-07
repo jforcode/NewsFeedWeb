@@ -1,9 +1,8 @@
 <template lang="html">
   <div class="sorter-holder">
-    <label class="mdl-textfield__label" for="sorterHolder">Sort by</label>
-    <br />
-    <select class="jb-mr-tp--sm" v-model="appState.sorter" id="sorterHolder" @change="onSorterChange">
-      <option :value="refSorter" v-for="refSorter in appState.sorters">
+    <label class="options-label" for="sorterHolder">Sort by</label>
+    <select class="sort-select" v-model="appState.sorter" id="sorterHolder" @change="onSorterChange">
+      <option :id="index" :value="refSorter" v-for="(refSorter, index) in appState.sorters">
         {{ refSorter.displayLabel }}
       </option>
     </select>
@@ -27,5 +26,17 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+.sorter-holder {
+}
+
+.sort-select {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  background: #FFFFFF;
+}
+
 </style>

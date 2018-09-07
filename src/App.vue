@@ -64,7 +64,7 @@ a {
 
 .options-layout {
   flex: 1 0;
-  overflow: auto;
+  overflow: scroll;
 }
 
 .content-layout {

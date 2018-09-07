@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="filter-group">
-    <p class="filter-group__label">Select {{ filterGroup.filterType }}</p>
+    <p class="filter-group__label options-label">Select {{ filterGroup.filterType }}</p>
     <div class="filter-group__filters">
       <div v-for="(filter, index) in filterGroup.filters" class="filter">
         <label class="filter__value" :for="compId + '_filter_' + index">

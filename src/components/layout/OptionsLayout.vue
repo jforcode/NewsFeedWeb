@@ -30,8 +30,11 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="css">
 .options-layout {
   padding: 32px 16px 108px 32px;
+}
+.options-label {
+  color: var(--primary-color);
 }
 </style>

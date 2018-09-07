@@ -1,12 +1,13 @@
 <template lang="html">
-  <div class="">
-    <form @submit.prevent.default="search">
-      <label for="searchBox">Search Title or Publisher</label>
-      <br />
-      <input class="jb-mr-tp--sm" type="text" id="searchBox"
-        v-model="appState.searchTerm">
-    </form>
+  <form @submit.prevent.default="search">
+  <div class="search-box">
+      <label for="searchBox" class="options-label">Search by Title or Publisher
+        <input class="search-box__input" type="text" id="searchBox"
+          placeholder="Search"
+          v-model="appState.searchTerm">
+      </label>
   </div>
+</form>
 </template>
 
 <script>
@@ -26,5 +27,21 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+.search-box {
+  display: flex;
+}
+
+.search-box__label {
+
+}
+
+.search-box__input {
+  padding: 8px 12px;
+  border: 1px solid #BDBDBD;
+  border-radius: 4px;
+  margin-top: 8px;
+  width: 100%;
+  display: block;
+}
 </style>
