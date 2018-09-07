@@ -47,6 +47,10 @@ a {
   color: var(--primary-text-color-on-light-bg);
 }
 
+button:focus {
+  outline: none;
+}
+
 #app {
   position: fixed;
   top: 0;

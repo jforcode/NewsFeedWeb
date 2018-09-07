@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="all-filters-layout">
+  <div class="all-filters-layout" @keyup.esc="close">
     <div class="top-status-bar jb-shadow--2dp">
       <p class="status__title">Showing {{ filterGroup.filters.length }} of type {{ filterGroup.filterType }}</p>
       <div class="jb-flex-spacer"></div>
@@ -7,7 +7,7 @@
       <div class="status__icon" @click="$emit('onAllFilterConfirm', selectedFilters)">
         <i class="material-icons">check</i>
       </div>
-      <div class="status__icon" @click="$emit('onAllFilterClose')">
+      <div class="status__icon" @click="close">
         <i class="material-icons">clear</i>
       </div>
     </div>
@@ -41,7 +41,8 @@ export default {
   data () {
     return {
       appState: appState,
-      selectedFilters: []
+      selectedFilters: [],
+      evtListener: null
     }
   },
   methods: {
@@ -52,6 +53,9 @@ export default {
         let filterInd = this.selectedFilters.findIndex(selectedFilter => selectedFilter.value === filter.value)
         this.selectedFilters.splice(filterInd, 1)
       }
+    },
+    close: function () {
+      this.$emit('onAllFilterClose')
     }
   },
   created () {
@@ -62,6 +66,17 @@ export default {
         this.selectedFilters.push(filter)
       }
     })
+
+    let fnClose = this.close
+    this.evtListener = function (e) {
+      if (e.which === 27) {
+        fnClose()
+      }
+    }
+    document.addEventListener('keyup', this.evtListener)
+  },
+  beforeDestroy () {
+    document.removeEventListener('keyup', this.evtListener)
   }
 }
 </script>

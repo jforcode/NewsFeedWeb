@@ -56,6 +56,7 @@ export default {
   margin-right: 8px;
   color: var(--primary-color);
   cursor: pointer;
+  transition: all .2s;
 }
 .page-control:hover {
   background: #EEEEEE;
@@ -66,9 +67,6 @@ export default {
 }
 .page-control[disabled]:hover {
   background: inherit;
-}
-.page-control:focus {
-  outline: none;
 }
 
 .page-status {

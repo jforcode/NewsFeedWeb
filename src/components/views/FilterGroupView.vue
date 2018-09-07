@@ -10,14 +10,19 @@
         </label>
       </div>
     </div>
-    <button v-if="filterGroup.moreAvailable" class="filter-group__show-all" @click="loadAllFilters">
-      SHOW ALL
-    </button>
-    <AllFiltersLayout v-if="showAllFilters"
-      :filter-group="allFilterGroup"
-      :comp-id="'allPubs'"
-      @onAllFilterClose="onAllFilterClose"
-      @onAllFilterConfirm="onAllFilterConfirm" />
+    <div v-if="filterGroup.moreAvailable" class="jb-flex-row jb-mr-tp">
+      <div class="jb-flex-spacer"></div>
+      <button class="filter-group__show-all" @click="loadAllFilters">
+        SHOW ALL
+      </button>
+    </div>
+    <transition name="fade">
+      <AllFiltersLayout v-if="showAllFilters"
+        :filter-group="allFilterGroup"
+        :comp-id="'allPubs'"
+        @onAllFilterClose="onAllFilterClose"
+        @onAllFilterConfirm="onAllFilterConfirm" />
+    </transition>
   </div>
 </template>
 
@@ -98,6 +103,22 @@ export default {
 }
 
 .filter-group__show-all {
+  background: transparent;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all .2s;
+  color: var(--primary-color);
+}
+.filter-group__show-all:hover {
+  background-color: #EAEAEA;
+}
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>
