@@ -64,7 +64,6 @@ button:focus {
   align-items: stretch;
   height: 100%;
   margin-top: 2px;
-  box-sizing: border-box;
 }
 
 .options-layout {
