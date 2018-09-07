@@ -30,7 +30,7 @@ export default {
 
 <style lang="css" scoped>
 .content-layout {
-  padding: 32px 16px 108px 16px;
+  padding: 16px 16px 108px 32px;
 }
 
 .feeds-holder {
@@ -40,7 +40,7 @@ export default {
 }
 
 .feed-item {
-  width: 45%;
+  width: 44.5%;
   margin: 0 16px 16px 0;
 }
 </style>

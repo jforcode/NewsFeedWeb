@@ -1,11 +1,11 @@
 <template lang="html">
   <div class="status-bar">
-    <div class="jb-flex-row">
-      <span>{{ statusDisplay }}</span>
+    <div class="jb-flex-row jb-flex-row--centered">
+      <span class="status">{{ statusDisplay }}</span>
       <div class="jb-flex-spacer"></div>
       <PaginationView />
     </div>
-    <SelectedFiltersView />
+    <SelectedFiltersView class="jb-mr-tp" />
   </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
     statusDisplay: function () {
       return this.appState.feed.length
         ? 'Showing ' + this.appState.feed.length + ' of ' + this.appState.countAllFeed + ' results'
-        : ''
+        : 'Loading...'
     }
   },
   components: {
@@ -37,5 +37,9 @@ export default {
 
 <style lang="css">
 .status-bar {
+}
+
+.status {
+  font-size: 1.4em;
 }
 </style>

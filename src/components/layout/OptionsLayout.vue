@@ -34,6 +34,7 @@ export default {
 .options-layout {
   padding: 32px 16px 108px 32px;
 }
+
 .options-label {
   color: var(--primary-color);
 }

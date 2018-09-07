@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="jb-flex-row">
+  <div class="pagination-holder">
     <button :disabled="!firstVisible" class="page-control" @click="loadPage(1)">
       <i class="material-icons">first_page</i>
     </button>
@@ -41,5 +41,15 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+.pagination-holder {
+  display: flex;
+  align-items: center;
+}
+
+.page-control {
+  background: transparent;
+  border: none;
+  margin: 8px;
+}
 </style>

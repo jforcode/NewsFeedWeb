@@ -60,11 +60,12 @@ a {
   align-items: stretch;
   height: 100%;
   margin-top: 2px;
+  box-sizing: border-box;
 }
 
 .options-layout {
   flex: 1 0;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .content-layout {

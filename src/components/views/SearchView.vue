@@ -29,11 +29,12 @@ export default {
 
 <style lang="css" scoped>
 .search-box {
-  display: flex;
+  box-sizing: border-box;
 }
 
 .search-box__label {
-
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .search-box__input {
@@ -43,5 +44,6 @@ export default {
   margin-top: 8px;
   width: 100%;
   display: block;
+  box-sizing: border-box;
 }
 </style>
