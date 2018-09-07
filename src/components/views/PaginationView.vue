@@ -6,7 +6,7 @@
     <button :disabled="!firstVisible" class="page-control" @click="loadPage(appState.currPageNum - 1)">
       <i class="material-icons">chevron_left</i>
     </button>
-    <p class="page-control">Page {{ appState.currPageNum }} of {{ appState.lastPageNum }}</p>
+    <span class="page-status">Page {{ appState.currPageNum }} of {{ appState.lastPageNum }}</span>
     <button :disabled="!lastVisible" class="page-control" @click="loadPage(appState.currPageNum + 1)">
       <i class="material-icons">chevron_right</i>
     </button>
@@ -50,6 +50,30 @@ export default {
 .page-control {
   background: transparent;
   border: none;
-  margin: 8px;
+  border-radius: 50%;
+  padding: 8px;
+  margin-left: 8px;
+  margin-right: 8px;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+.page-control:hover {
+  background: #EEEEEE;
+}
+.page-control[disabled] {
+  color: gray;
+  cursor: inherit;
+}
+.page-control[disabled]:hover {
+  background: inherit;
+}
+.page-control:focus {
+  outline: none;
+}
+
+.page-status {
+  margin-left: 8px;
+  margin-right: 8px;
+  font-size: 1rem;
 }
 </style>
