@@ -1,13 +1,14 @@
 <template lang="html">
   <form @submit.prevent.default="search">
-  <div class="search-box">
-      <label for="searchBox" class="options-label">Search by Title or Publisher
+    <div class="search-box">
+      <label for="searchBox" class="options-label">
+        Search by Title or Publisher
         <input class="search-box__input" type="text" id="searchBox"
-          placeholder="Search"
+          placeholder="Ex: Games, 10TV, India etc."
           v-model="appState.searchTerm">
       </label>
-  </div>
-</form>
+    </div>
+  </form>
 </template>
 
 <script>

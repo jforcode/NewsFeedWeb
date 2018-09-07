@@ -33,7 +33,10 @@ const state = {
 }
 
 const methods = {
-  // TODO: change name
+  removeAllSelectedFilters: function (type) {
+    state.selectedFilters = state.selectedFilters.filter(selectedFilter => selectedFilter.type !== type)
+  },
+
   selectFilter: function (filterGroup, filter) {
     if (filter.selected) {
       state.selectedFilters.push(new SelectedFilter({

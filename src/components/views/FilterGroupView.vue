@@ -10,7 +10,7 @@
         </label>
       </div>
     </div>
-    <div v-if="filterGroup.moreAvailable" class="jb-flex-row jb-mr-tp">
+    <div v-if="filterGroup.moreAvailable" class="jb-flex-row jb-mr-tp--sm">
       <div class="jb-flex-spacer"></div>
       <button class="filter-group__show-all" @click="loadAllFilters">
         SHOW ALL
@@ -62,11 +62,14 @@ export default {
     },
     onAllFilterConfirm: function (selectedFilters) {
       this.showAllFilters = false
-      this.allFilterGroup = {}
+      this.allFilterGroup = null
+      appMethods.removeAllSelectedFilters(this.filterGroup.filterType)
       selectedFilters.forEach(selectedFilter => {
         appMethods.selectFilter(this.filterGroup, selectedFilter)
         var thisFilter = this.filterGroup.filters.find(filter => filter.value === selectedFilter.value)
-        thisFilter.selected = true
+        if (thisFilter) {
+          thisFilter.selected = true
+        }
       })
       appMethods.loadPage(1)
     }
@@ -91,15 +94,14 @@ export default {
 }
 
 .filter {
-
 }
 
 .filter__input {
-
+  cursor: pointer;
 }
 
 .filter__value {
-
+  cursor: pointer;
 }
 
 .filter-group__show-all {

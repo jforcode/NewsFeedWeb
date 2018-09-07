@@ -3,7 +3,6 @@
     <div class="top-status-bar jb-shadow--2dp">
       <p class="status__title">Showing {{ filterGroup.filters.length }} of type {{ filterGroup.filterType }}</p>
       <div class="jb-flex-spacer"></div>
-      <span class="jb-mr-rt">{{ selectedFilters.length }} selected</span>
       <div class="status__icon" @click="$emit('onAllFilterConfirm', selectedFilters)">
         <i class="material-icons">check</i>
       </div>
@@ -12,8 +11,15 @@
       </div>
     </div>
 
-    <div class="all-filters">
-      {{ selectedFilters }}
+    <div class="filter-group">
+      <div class="filter-group__selected">
+        <p v-if="selectedFilters.length === 0">No filters selected</p>
+        <span class="selected-filter jb-chip"
+          v-for="selectedFilter in selectedFilters">
+          <span class="jb-chip__text">{{ selectedFilter.label }}</span>
+          <i class="material-icons delete-filter-icon" @click="removeSelectedFilter(selectedFilter)">cancel</i>
+        </span>
+      </div>
       <div class="filter-group__filters">
         <div v-for="(filter, index) in filterGroup.filters" class="filter">
           <label class="filter__value" :for="compId + '_filter_' + index">
@@ -109,8 +115,41 @@ export default {
   cursor: pointer;
 }
 
-.all-filters {
-  padding: 32px;
+.filter-group {
+  padding: 16px 32px 32px;
+}
 
+.filter-group__selected {
+
+}
+
+.delete-filter-icon {
+  cursor: pointer;
+}
+
+.selected-filter {
+  margin-left: 8px;
+  margin-top: 8px;
+}
+.selected-filter:first-child {
+  margin-left: 0;
+}
+
+.filter-group__filters {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.filter {
+  width: 25%;
+}
+
+.filter__value {
+  cursor: pointer;
+}
+
+.filter__input {
+  cursor: pointer;
 }
 </style>
